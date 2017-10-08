@@ -1,0 +1,222 @@
+
+SF2 a@15:8 op1@7:0
+SF3 a@15:12 b@11:8 op1@7:0
+SF4 a@15:12 b@11:8 n@7:6 op1@5:0
+
+
+SB		SF2
+SBC		SF3
+SBR		SF3
+SBRN	SF3
+SC		SF2
+SLR		SF3
+SLRO	SF3
+SR		SF3
+SRC		SF3
+SRO		SF3
+SRR		SF3
+SRRS	SF4
+SSR		SF3
+SSRO	SF3
+
+
+
+ABS		off18 op2 s1d op1
+ABSB	off18 op2 b bpos3 op1
+B		disp24 op1
+BIT		d pos2 op2 pos1 s2 s1 op1
+BO		off10 op2 s2 s1d op1
+BOL		off16 s2 s1d op1
+BRC		op2 disp15 const4 s1 op1
+BRN		op2 disp15 n s1 op1
+BRR		op2 disp15 s2 s1 op1
+RC		d op2 const9 s1 op1
+RCPW	d pos op2 width const4 s1 op1
+RCR		d s3 op2 const9 s1 op1
+RCRR	d s3 op2 const4 s1 op1
+RCRR	d s3 op2 const4 s1 op1
+RCRW	d s3 op2 width const4 s1 op1
+RLC		d const16 s1 op1
+RR		d op2 n s2 s1 op1
+RR1		d op2 n s2 s1 op1
+RR2		d op2 s2 s1 op1
+RRPW	d pos op2 width s2 s1 op1
+RRR		d s3 op2 n s2 s1 op1
+RRR1	d s3 op2 n s2 s1 op1
+RRR2	d s3 op2 s2 s1 op1
+RRRR	d s3 op2 s2 s1 op1
+RRRW	d s3 op2 width s2 s1 op1
+SYS		op2 s1d op1
+
+
+ABS
+	RR 1C 0B
+ABS.B
+	RR 5C 0B
+ABS.H
+	RR 7C 0B
+ABSDIF
+	RC 0E 8B
+	RR 0E 0B
+ABSDIF.B
+	RR 4E 0B
+ABSDIF.H
+	RR 6E 0B
+ABSDIFS
+	RC 0F 8B
+	RR 0F 0B
+ABSDIFS.H
+	RR 6F 0B
+ABSS
+	RR 1D 0B
+ABSS.H
+	RR 7D 0B
+ADD
+	RC 00 8B
+	RR 00 0B
+	SRC C2
+	SRC 92 (<%D15)
+	SRC 9A (>%D15)
+	SRR 42
+	SRR 12 (<%D15)
+	SRR 1A (<%D15)
+ADD.A
+	RR 01 01
+	SRC B0
+	SRR 30
+ADD.B
+	RR 40 0B
+ADD.H
+	RR 60 0B
+ADDC
+	RC 05 8B
+	RR 05 0B
+ADDI
+	RLC 1B
+ADDIH
+	RLC 9B
+ADDIH
+	RLC 11
+ADDS
+	RC 02 8B
+	RR 02 0B
+	SRR 22
+ADDS.H
+	RR 60 0B
+ADDS.HU
+	RR 63 0B
+ADDS.U
+	RC 03 8B
+	RR 03 0B
+ADDSC.A
+	RR 60 01
+	SRRS 10
+ADDSC.AT
+	RR 62 01
+ADDX
+	RC 04 8B
+	RR 04 0B
+AND
+	RC 08 8F
+	RR 08 0F
+	SC 16
+	SRR 26
+AND.AND.T
+	BIT 00 47
+AND.ANDN.T
+	BIT 03 47
+AND.NOR.T
+	BIT 02 47
+AND.OR.T
+	BIT 01 47
+AND.EQ
+	RC 20 8B
+	RR 20 0B
+AND.GE
+	RC 24 8B
+	RR 24 0B
+AND.GE.U
+	RC 25 8B
+	RR 25 0B
+AND.LT
+	RC 22 8B
+	RR 22 0B
+AND.LT.U
+	RC 23 8B
+	RR 23 0B
+AND.NE
+	RC 21 8B
+	RR 21 0B
+AND.T
+	BIT 00 87
+ANDN
+	RC 0E 8F
+	RR 0E 0F
+ANDN.T
+	BIT 03 87
+BISR
+	RC 00 AD
+	SC E0
+BMERGE
+	RR 01 4B
+BSPLIT
+	RR 09 4B
+CACHEA.I (E)
+	BO 2E 89 B
+	BO 0E A9 R
+	BO 1E A9 C
+	BO 0E 89 X++
+	BO 1E 89 ++X
+CACHEA.W (C)
+	BO 2C 89 B
+	BO 0C A9 R
+	BO 1C A9 C
+	BO 0C 89 X++
+	BO 1C 89 ++X
+CACHEA.WI (D)
+	BO 2D 89 B
+	BO 0D A9 R
+	BO 1D A9 C
+	BO 0D 89 X++
+	BO 1D 89 ++X
+CACHEI.W (B)
+	BO 2B 89 B
+	BO 0B 89 X++
+	BO 1B 89 ++X
+CACHEI.I (A)
+	BO 2A 89 B
+	BO 0A 89 X++
+	BO 1A 89 ++X
+CACHEI.WI (F)
+	...
+CADD
+	RCR 00 AB
+	RRR 00 2B
+	SRC 8A
+CADDN
+	RCR 01 AB
+	RRR 01 2B
+	SRC CA
+CALL
+	B 6D
+	SB 5C
+CALLA
+	B ED
+CALLI
+	RR 00 2D
+CLO
+	RR 1C 0F
+CLO.H
+	RR 7D 0F
+CLS
+	RR 1D 0F
+CLS.H
+	RR 7E 0F
+CLZ
+	RR 1B 0F
+CLZ.H
+	RR 7C 0F
+
+	
+
+

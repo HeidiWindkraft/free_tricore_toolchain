@@ -1,0 +1,149 @@
+
+otclasm input format:
+
+In general symbols and sections can't contain whitespace.
+otclasm assumes that all comments (maybe except // comments) were already removed by the C preprocessor.
+otclasm must be able to deal with "# file line" directives.
+-- (Not sure about this) The following special characters don't seem to be allowed in symbols: \ / ^
+
+
+==== Header:
+	- Global symbols
+	- External symbols
+	- Internal symbols
+
+	=== Syntax
+	
+		global <number of global symbols n>
+			<section 0> <symbol 0>
+			<section 1> <symbol 1>
+			...
+			<section n-1> <symbol n-1>
+
+
+		extern <number of external symbols n>
+			<symbol 0>
+			<symbol 1>
+			...
+			<symbol n-1>
+
+		intern <number of internal symbols n>
+			<symbol 0>
+			<symbol 1>
+			...
+			<symbol n-1>
+
+		// symbol description
+		
+			<identifier> <address> <size>
+		
+			<address>:
+				&-						// unresolved address
+				&a	<absolute address>	// absolute address
+				&r <relative address>	// address relative to start of section in this file
+
+				Examples:
+					main &-					// unresolved address
+					main &a	0x80000100		// absolute address
+					main &r 256				// address relative to start of section in this file
+			
+			<size>:
+				-					// unresolved size
+				<size in bytes>		// size in bytes
+				
+				Examples:
+					main &- -
+					main &- 256
+
+	=== Example
+
+		global 1
+			.text main &- -
+
+		extern 2
+			readLine &- -
+			parseInt &- -
+
+		intern 5
+			mainLoopBegin &- -
+			mainLoopEnd &- -
+			fail &- -
+			ok &- -
+			next &- -
+
+
+==== Sections (code)
+	Multiple sections constaining instructions or raw data.
+	
+	=== Syntax
+	
+		begin <section name>
+			<intruction 0>
+			...
+		end
+
+	=== Example
+
+		begin .text
+			aligne 2
+			: main
+				srr mov.aa  6 10	// r6 = r10
+				sc  sub.a  32		// r10 = r10 - 32
+				<...>
+				ret
+		end
+		begin .rodata
+			raw32 0x11223344
+			sys nop
+			sr nop
+			raw16 0x5566
+			raw32 lab main
+			raw16 hiu main
+			raw16 lou main
+		end
+
+	=== Pseudo intructions:
+		aligne x: align next item to 2**x
+		alignv x: align next item to x
+		raw8   x
+		raw16  x
+		raw32  x
+		raw64  x: Add integer or label x as raw data
+		: x     : Define a label called x
+		end     : Ends the section
+
+	=== Accessing labels:
+		lab    x  : The absolute value of label x
+		off    x  : The distance from the current position to label x
+		dist   x y: The distance between label x and y
+		his    x  : The high sign-adjusted half of label x: ((his x) << 16) + (los x) == label x
+		los    x  : The low sign-adjusted half of label x (see his).
+		hiu    x  : The high half of label x: ((hiu x) << 16) | (lou x)
+		lou    x  : The low half of label x (see hiu).
+
+==== Full example
+
+global 2
+	.text.util readNextIntOrExit &- -
+	.text.util _readNextIntOrExit_end &- -
+
+extern 3
+	eof &- -
+	readNextInt &- -
+	exit &- -
+
+intern 1
+	reachedEof &- -
+
+begin .text.util
+	alignv 4
+	: readNextIntOrExit
+		b   call off eof
+		sbr jz   off reachedEof 2	// if (d2 == 0) goto reachedEof
+		b   j    off readNextInt	// tail call
+	: reachedEof
+		b   j    off exit
+	: _readNextIntOrExit_end
+end
+
+
