@@ -8,6 +8,7 @@
 #include <string>
 #include <cctype>
 #include <stdexcept>
+#include <sstream>
 
 namespace otclasm { namespace {
 
@@ -31,10 +32,16 @@ void nextToken(istream_t &i, token_t &tok) {
 namespace getIntRadixErrors {
 	enum values {
 		NAN = -1,	// Not a number.
-		ENAN = -2	// Looks like a number but isn't.
+		NOT_ENOUGH_DIGITS = -2,
+		ILLEGAL_CHARACTER_LE10 = -3,
+		ILLEGAL_CHARACTER_GT10 = -4,
+		UNKNOWN_RADIX = -5
+		
 	};
 }
 
+// Returns the integer base of a token.
+// Returns a negative number if the token isn't an integer.
 int getIntRadix(token_in tok) {
 	if (tok.size() == 0) {
 		return getIntRadixErrors::NAN; // Not a number.
@@ -48,40 +55,50 @@ int getIntRadix(token_in tok) {
 	}
 	char s = std::tolower(tok[1]);
 	int radix = -1;
-	switch (x) {
-	case 'b': radix =  2; break;
-	case 'o': radix =  8; break;
-	case 'x': radix = 16; break;
+	if (f == '0') {
+		switch (s) {
+		case 'b': radix =  2; break;
+		case 'o': radix =  8; break;
+		case 'x': radix = 16; break;
+		}
 	}
 	if ((radix == -1) && std::isdigit(s)) {
 		radix = 10;
 	}
 	if (radix == -1) {
-		return getIntRadixErrors::NAN;
+		return getIntRadixErrors::UNKNOWN_RADIX;
 	}
 	if ((radix != 10) && (tok.size() < 3)) {
-		return getIntRadixErrors::ENAN;
+		return getIntRadixErrors::NOT_ENOUGH_DIGITS;
+	}
+	token_t::const_iterator begin, end;
+	begin = tok.begin();
+	end = tok.end();
+	if (radix != 10) {
+		begin += 2;
 	}
 	if (radix <= 10) {
-		for (char c : tok) {
-			if (!std::isdigit(c)) {
-				return getIntRadixErrors::ENAN;
+		for (token_t::const_iterator it = begin; it < end; ++it) {
+			char c = *it;
+			unsigned val = c - '0';
+			if ((val >= (unsigned)radix) && (c != '_')) {
+				return getIntRadixErrors::ILLEGAL_CHARACTER_LE10;
 			}
 		}
 	} else {
-		token_t::const_iterator it, end;
-		end = tok.end();
-		for (it = tok.begin() + 1; it < end; ++it) {
+		for (token_t::const_iterator it = begin; it < end; ++it) {
 			char c = std::tolower(*it);
-			bool valid = std::isdigit(c) || (('a' <= c) && (c <= 'f'));
+			bool valid = std::isdigit(c) || (('a' <= c) && (c <= 'f')) || (c == '_');
 			if (!valid) {
-				return getIntRadixErrors::ENAN;
+				return getIntRadixErrors::ILLEGAL_CHARACTER_GT10;
 			}
 		}
 	}
 	return radix;
 }
 
+// Here we actually just call strtoull ...
+// This function assumes that tok was already checked for validity by getIntRadix.
 uint64_t getInt(token_in tok, int radix) {
 	uint64_t res;
 	std::size_t pos;
@@ -89,8 +106,24 @@ uint64_t getInt(token_in tok, int radix) {
 	if ((tok.size() > 2) && (radix != 10)) {
 		pos = 2;
 	}
-	res = std::stoull(tok, &pos, radix);
-	if (pos != tok.size()) {
+	std::string localCopy;
+	const char *cstr = tok.c_str();
+	const char *cstrEnd = cstr + tok.size();
+	if (tok.find('_') == token_t::npos) {
+		// TODO: Actually we can limit the size and allocate a char array on stack.
+		localCopy.reserve(tok.size());
+		for (char c : tok) {
+			if (c != '_') {
+				localCopy.push_back(c);
+			}
+		}
+		cstr = localCopy.c_str();
+		cstrEnd = cstr + localCopy.size();
+	}
+	const char *cstrBegin = cstr + pos;
+	char *cstrEndRes = nullptr;
+	res = std::strtoull(cstrBegin, &cstrEndRes, radix);
+	if (cstrEndRes != cstrEnd) {
 		throw std::invalid_argument("Couldn't parse entire token.");
 	}
 	return res;
