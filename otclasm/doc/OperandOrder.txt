@@ -1,0 +1,46 @@
+# Operand order of different opcode formats.
+# The operand order tries to resememble the one of mnemonics, however,
+# if the menemonics of one opcode have different orders,
+# the operand order may differ from the one of certain mnemonics.
+# Furthermore always all operands need to be specified - even if they are ignored.
+
+ABS     s1d:regIdx      off18:lab       #               #               #
+ABSB	bpos3:uint8     b:uint8         off8:lab        #               #
+B       disp24:lab      #               #               #               #
+BIT     d:regIdx        s1:regIdx       pos1:uint8      s2:regIdx       pos2:uint8
+BO      s1d:regIdx      s1:regIdx       off10:lab       #               #
+BOL     s1d:regIdx      s1:regIdx       off16:lab       #               #
+BRC     s1:regIdx       const4:imm      disp15:lab      #               #
+BRN     s1:regIdx       n:uint8         disp15:lab      #               #
+BRR     s1:regIdx       s2:regIdx       disp15:lab      #               #
+RC      d:regIdx        s1:regIdx       const9:imm      #               #
+RCPW    d:regIdx        s1:regIdx       const4:imm      pos:uint8       width:uint8
+RCR     d:regIdx        s3:regIdx       s1:regIdx       const9:imm      #
+RCRR    d:regIdx        s1:regIdx       s3:regIdx       const4:imm      #
+RCRW    d:regIdx        const4:imm      s3:regIdx       width:uint8     #
+RLC     d:regIdx        s1:regIdx       const16:lab     #               #
+RR      d:regIdx        s1:regIdx       s2:regIdx       n:uint8         #
+RR1     d:regIdx        s1:regIdx       s2:regIdx       n:uint8         #
+RR2     d:regIdx        s1:regIdx       s2:regIdx       #               #
+RRPW    d:regIdx        s1:regIdx       s2:regIdx       pos:uint8       width:uint8
+RRR     d:regIdx        s3:regIdx       s1:regIdx       s2:regIdx       n:uint8
+RRR1    d:regIdx        s3:regIdx       s1:regIdx       s2:regIdx       n:uint8
+RRR2    d:regIdx        s3:regIdx       s1:regIdx       s2:regIdx       #
+RRRR    d:regIdx        s1:regIdx       s2:regIdx       s3:regIdx       #
+RRRW    d:regIdx        s1:regIdx       s2:regIdx       s3:regIdx       width:uint8
+SB      disp8:lab       #               #
+SBC     const4:imm      disp4:lab       #
+SBR     s2:regIdx       disp4:lab       #
+SBRN    n:uint8         disp4:lab       #
+SC      const8:imm      #               #
+SLR     d:regIdx        s2:regIdx       #
+SLRO    d:regIdx        off4:imm        #
+SR      s1d:regIdx      #               #
+SRC     s1d:regIdx      const4:imm      #
+SRO     s2:regIdx       off4:imm        #
+SRR     s1d:regIdx      s2:regIdx       #
+SRRS    s1d:regIdx      s2:regIdx       n:uint8
+SSR     s1:regIdx       s2:regIdx       #
+SSRO    off4:regIdx     s1:regIdx       #
+SYS     s1d:regIdx      #
+

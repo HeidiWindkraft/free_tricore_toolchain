@@ -1,0 +1,561 @@
+LINE: ""
+	TOKEN: "" : -1, 0
+LINE: "global 2"
+	TOKEN: "global" : -1, 0
+	TOKEN: "2" : 10, 2
+LINE: "	.text.X_calltable X_JiApiA &- #-"
+	TOKEN: ".text.X_calltable" : -1, 0
+	TOKEN: "X_JiApiA" : -1, 0
+	TOKEN: "&-" : -1, 0
+	TOKEN: "#-" : -1, 0
+LINE: "	.text.X_calltable X_JiApiB &- #-"
+	TOKEN: ".text.X_calltable" : -1, 0
+	TOKEN: "X_JiApiB" : -1, 0
+	TOKEN: "&-" : -1, 0
+	TOKEN: "#-" : -1, 0
+LINE: "	.text.X_util      X_memcpy &- #-"
+	TOKEN: ".text.X_util" : -1, 0
+	TOKEN: "X_memcpy" : -1, 0
+	TOKEN: "&-" : -1, 0
+	TOKEN: "#-" : -1, 0
+LINE: "	.text.X_util      X_memcmp &- #-"
+	TOKEN: ".text.X_util" : -1, 0
+	TOKEN: "X_memcmp" : -1, 0
+	TOKEN: "&-" : -1, 0
+	TOKEN: "#-" : -1, 0
+LINE: ""
+	TOKEN: "" : -1, 0
+LINE: "extern 2"
+	TOKEN: "extern" : -1, 0
+	TOKEN: "2" : 10, 2
+LINE: "	X_interface &-"
+	TOKEN: "X_interface" : -1, 0
+	TOKEN: "&-" : -1, 0
+LINE: "	X_CallTablePanicCallout &-"
+	TOKEN: "X_CallTablePanicCallout" : -1, 0
+	TOKEN: "&-" : -1, 0
+LINE: ""
+	TOKEN: "" : -1, 0
+LINE: "intern 2"
+	TOKEN: "intern" : -1, 0
+	TOKEN: "2" : 10, 2
+LINE: "	.text.X_calltable X_CallTablePanic &- #-"
+	TOKEN: ".text.X_calltable" : -1, 0
+	TOKEN: "X_CallTablePanic" : -1, 0
+	TOKEN: "&-" : -1, 0
+	TOKEN: "#-" : -1, 0
+LINE: "	.text.X_calltable X_CallTableTailCall &- #-"
+	TOKEN: ".text.X_calltable" : -1, 0
+	TOKEN: "X_CallTableTailCall" : -1, 0
+	TOKEN: "&-" : -1, 0
+	TOKEN: "#-" : -1, 0
+LINE: ""
+	TOKEN: "" : -1, 0
+LINE: ""
+	TOKEN: "" : -1, 0
+LINE: "section .text.X_calltable"
+	TOKEN: "section" : -1, 0
+	TOKEN: ".text.X_calltable" : -1, 0
+LINE: "section_intern 1"
+	TOKEN: "section_intern" : -1, 0
+	TOKEN: "1" : 10, 1
+LINE: "	X_CallTablePanicMovPcToA11 &-"
+	TOKEN: "X_CallTablePanicMovPcToA11" : -1, 0
+	TOKEN: "&-" : -1, 0
+LINE: ""
+	TOKEN: "" : -1, 0
+LINE: "	alignv 8"
+	TOKEN: "alignv" : -1, 0
+	TOKEN: "8" : 10, 8
+LINE: "label X_CallTablePanic"
+	TOKEN: "label" : -1, 0
+	TOKEN: "X_CallTablePanic" : -1, 0
+LINE: "	b   jl crel X_CallTablePanicGetPc"
+	TOKEN: "b" : -1, 0
+	TOKEN: "jl" : -1, 0
+	TOKEN: "crel" : -1, 0
+	TOKEN: "X_CallTablePanicGetPc" : -1, 0
+LINE: "label X_CallTablePanicMovPcToA11"
+	TOKEN: "label" : -1, 0
+	TOKEN: "X_CallTablePanicMovPcToA11" : -1, 0
+LINE: "	rlc movh.a a2    his X_CallTablePanicCallout"
+	TOKEN: "rlc" : -1, 0
+	TOKEN: "movh.a" : -1, 0
+	TOKEN: "a2" : -1, 0
+	TOKEN: "his" : -1, 0
+	TOKEN: "X_CallTablePanicCallout" : -1, 0
+LINE: "	bol lea    a2 a2 los X_CallTablePanicCallout"
+	TOKEN: "bol" : -1, 0
+	TOKEN: "lea" : -1, 0
+	TOKEN: "a2" : -1, 0
+	TOKEN: "a2" : -1, 0
+	TOKEN: "los" : -1, 0
+	TOKEN: "X_CallTablePanicCallout" : -1, 0
+LINE: "	sr  ji a2"
+	TOKEN: "sr" : -1, 0
+	TOKEN: "ji" : -1, 0
+	TOKEN: "a2" : -1, 0
+LINE: "	sb  j crel X_CallTablePanic"
+	TOKEN: "sb" : -1, 0
+	TOKEN: "j" : -1, 0
+	TOKEN: "crel" : -1, 0
+	TOKEN: "X_CallTablePanic" : -1, 0
+LINE: "// X_CallTablePanic_End"
+	TOKEN: "//" : -1, 0
+	TOKEN: "X_CallTablePanic_End" : -1, 0
+LINE: ""
+	TOKEN: "" : -1, 0
+LINE: "	alignv 8"
+	TOKEN: "alignv" : -1, 0
+	TOKEN: "8" : 10, 8
+LINE: "label X_CallTableTailCall"
+	TOKEN: "label" : -1, 0
+	TOKEN: "X_CallTableTailCall" : -1, 0
+LINE: "	rlc     movh.a a2    his X_interface"
+	TOKEN: "rlc" : -1, 0
+	TOKEN: "movh.a" : -1, 0
+	TOKEN: "a2" : -1, 0
+	TOKEN: "his" : -1, 0
+	TOKEN: "X_interface" : -1, 0
+LINE: "	bol     lea    a2 a2 los X_interface"
+	TOKEN: "bol" : -1, 0
+	TOKEN: "lea" : -1, 0
+	TOKEN: "a2" : -1, 0
+	TOKEN: "a2" : -1, 0
+	TOKEN: "los" : -1, 0
+	TOKEN: "X_interface" : -1, 0
+LINE: ""
+	TOKEN: "" : -1, 0
+LINE: "	// Check magic number"
+	TOKEN: "//" : -1, 0
+	TOKEN: "Check" : -1, 0
+	TOKEN: "magic" : -1, 0
+	TOKEN: "number" : -1, 0
+LINE: "	bo s    ld.w   d4 a2 0"
+	TOKEN: "bo" : -1, 0
+	TOKEN: "s" : -1, 0
+	TOKEN: "ld.w" : -1, 0
+	TOKEN: "d4" : -1, 0
+	TOKEN: "a2" : -1, 0
+	TOKEN: "0" : 10, 0
+LINE: "	rlc     movh   d5    0xabcd"
+	TOKEN: "rlc" : -1, 0
+	TOKEN: "movh" : -1, 0
+	TOKEN: "d5" : -1, 0
+	TOKEN: "0xabcd" : 16, 43981
+LINE: "	rlc     addi   d5 d5 0x0123"
+	TOKEN: "rlc" : -1, 0
+	TOKEN: "addi" : -1, 0
+	TOKEN: "d5" : -1, 0
+	TOKEN: "d5" : -1, 0
+	TOKEN: "0x0123" : 16, 291
+LINE: "	brr     jne    d4 d5 crel X_CallTablePanic"
+	TOKEN: "brr" : -1, 0
+	TOKEN: "jne" : -1, 0
+	TOKEN: "d4" : -1, 0
+	TOKEN: "d5" : -1, 0
+	TOKEN: "crel" : -1, 0
+	TOKEN: "X_CallTablePanic" : -1, 0
+LINE: ""
+	TOKEN: "" : -1, 0
+LINE: "	// Check major version"
+	TOKEN: "//" : -1, 0
+	TOKEN: "Check" : -1, 0
+	TOKEN: "major" : -1, 0
+	TOKEN: "version" : -1, 0
+LINE: "	bo s    ld.w   d4 a2 4"
+	TOKEN: "bo" : -1, 0
+	TOKEN: "s" : -1, 0
+	TOKEN: "ld.w" : -1, 0
+	TOKEN: "d4" : -1, 0
+	TOKEN: "a2" : -1, 0
+	TOKEN: "4" : 10, 4
+LINE: "	rlc     movh   d5    0x0000"
+	TOKEN: "rlc" : -1, 0
+	TOKEN: "movh" : -1, 0
+	TOKEN: "d5" : -1, 0
+	TOKEN: "0x0000" : 16, 0
+LINE: "	rlc     addi   d5 d5 0x0002"
+	TOKEN: "rlc" : -1, 0
+	TOKEN: "addi" : -1, 0
+	TOKEN: "d5" : -1, 0
+	TOKEN: "d5" : -1, 0
+	TOKEN: "0x0002" : 16, 2
+LINE: "	brr     jne    d4 d5 crel X_CallTablePanic"
+	TOKEN: "brr" : -1, 0
+	TOKEN: "jne" : -1, 0
+	TOKEN: "d4" : -1, 0
+	TOKEN: "d5" : -1, 0
+	TOKEN: "crel" : -1, 0
+	TOKEN: "X_CallTablePanic" : -1, 0
+LINE: ""
+	TOKEN: "" : -1, 0
+LINE: "	// Check minor version"
+	TOKEN: "//" : -1, 0
+	TOKEN: "Check" : -1, 0
+	TOKEN: "minor" : -1, 0
+	TOKEN: "version" : -1, 0
+LINE: "	bo s    ld.w   d4 a2 8"
+	TOKEN: "bo" : -1, 0
+	TOKEN: "s" : -1, 0
+	TOKEN: "ld.w" : -1, 0
+	TOKEN: "d4" : -1, 0
+	TOKEN: "a2" : -1, 0
+	TOKEN: "8" : 10, 8
+LINE: "	rlc     movh   d5    0x0000"
+	TOKEN: "rlc" : -1, 0
+	TOKEN: "movh" : -1, 0
+	TOKEN: "d5" : -1, 0
+	TOKEN: "0x0000" : 16, 0
+LINE: "	rlc     addi   d5 d5 0x0007"
+	TOKEN: "rlc" : -1, 0
+	TOKEN: "addi" : -1, 0
+	TOKEN: "d5" : -1, 0
+	TOKEN: "d5" : -1, 0
+	TOKEN: "0x0007" : 16, 7
+LINE: "	brr     jlt    d4 d5 crel X_CallTablePanic"
+	TOKEN: "brr" : -1, 0
+	TOKEN: "jlt" : -1, 0
+	TOKEN: "d4" : -1, 0
+	TOKEN: "d5" : -1, 0
+	TOKEN: "crel" : -1, 0
+	TOKEN: "X_CallTablePanic" : -1, 0
+LINE: ""
+	TOKEN: "" : -1, 0
+LINE: "	// Check argument"
+	TOKEN: "//" : -1, 0
+	TOKEN: "Check" : -1, 0
+	TOKEN: "argument" : -1, 0
+LINE: "	rr      xor    d4 d3 d2"
+	TOKEN: "rr" : -1, 0
+	TOKEN: "xor" : -1, 0
+	TOKEN: "d4" : -1, 0
+	TOKEN: "d3" : -1, 0
+	TOKEN: "d2" : -1, 0
+LINE: "	rlc     movh   d5    0xabcd"
+	TOKEN: "rlc" : -1, 0
+	TOKEN: "movh" : -1, 0
+	TOKEN: "d5" : -1, 0
+	TOKEN: "0xabcd" : 16, 43981
+LINE: "	rlc     addi   d5 d5 0x0123"
+	TOKEN: "rlc" : -1, 0
+	TOKEN: "addi" : -1, 0
+	TOKEN: "d5" : -1, 0
+	TOKEN: "d5" : -1, 0
+	TOKEN: "0x0123" : 16, 291
+LINE: "	brr     jne    d4 d5 crel X_CallTablePanic"
+	TOKEN: "brr" : -1, 0
+	TOKEN: "jne" : -1, 0
+	TOKEN: "d4" : -1, 0
+	TOKEN: "d5" : -1, 0
+	TOKEN: "crel" : -1, 0
+	TOKEN: "X_CallTablePanic" : -1, 0
+LINE: ""
+	TOKEN: "" : -1, 0
+LINE: "	// Tail call to procedure"
+	TOKEN: "//" : -1, 0
+	TOKEN: "Tail" : -1, 0
+	TOKEN: "call" : -1, 0
+	TOKEN: "to" : -1, 0
+	TOKEN: "procedure" : -1, 0
+LINE: "	rr      addsc.a a3 a2 d2 0"
+	TOKEN: "rr" : -1, 0
+	TOKEN: "addsc.a" : -1, 0
+	TOKEN: "a3" : -1, 0
+	TOKEN: "a2" : -1, 0
+	TOKEN: "d2" : -1, 0
+	TOKEN: "0" : 10, 0
+LINE: "	bo s    ld.a    a3 a3 0"
+	TOKEN: "bo" : -1, 0
+	TOKEN: "s" : -1, 0
+	TOKEN: "ld.a" : -1, 0
+	TOKEN: "a3" : -1, 0
+	TOKEN: "a3" : -1, 0
+	TOKEN: "0" : 10, 0
+LINE: "	sr      ji      a3"
+	TOKEN: "sr" : -1, 0
+	TOKEN: "ji" : -1, 0
+	TOKEN: "a3" : -1, 0
+LINE: "	b       j       crel X_CallTablePanic		"
+	TOKEN: "b" : -1, 0
+	TOKEN: "j" : -1, 0
+	TOKEN: "crel" : -1, 0
+	TOKEN: "X_CallTablePanic" : -1, 0
+	TOKEN: "" : -1, 0
+LINE: "// X_CallTableTailCall_End"
+	TOKEN: "//" : -1, 0
+	TOKEN: "X_CallTableTailCall_End" : -1, 0
+LINE: ""
+	TOKEN: "" : -1, 0
+LINE: "	alignv 8"
+	TOKEN: "alignv" : -1, 0
+	TOKEN: "8" : 10, 8
+LINE: "label X_JiApiA"
+	TOKEN: "label" : -1, 0
+	TOKEN: "X_JiApiA" : -1, 0
+LINE: "	rlc    movh   d3    0xabcd"
+	TOKEN: "rlc" : -1, 0
+	TOKEN: "movh" : -1, 0
+	TOKEN: "d3" : -1, 0
+	TOKEN: "0xabcd" : 16, 43981
+LINE: "	rlc    addi   d3 d3 0x0123"
+	TOKEN: "rlc" : -1, 0
+	TOKEN: "addi" : -1, 0
+	TOKEN: "d3" : -1, 0
+	TOKEN: "d3" : -1, 0
+	TOKEN: "0x0123" : 16, 291
+LINE: "	rlc    mov    d2    12"
+	TOKEN: "rlc" : -1, 0
+	TOKEN: "mov" : -1, 0
+	TOKEN: "d2" : -1, 0
+	TOKEN: "12" : 10, 12
+LINE: "	srr    xor    d3 d2"
+	TOKEN: "srr" : -1, 0
+	TOKEN: "xor" : -1, 0
+	TOKEN: "d3" : -1, 0
+	TOKEN: "d2" : -1, 0
+LINE: "	b      j X_CallTableTailCall"
+	TOKEN: "b" : -1, 0
+	TOKEN: "j" : -1, 0
+	TOKEN: "X_CallTableTailCall" : -1, 0
+LINE: "// X_JiApiA_End"
+	TOKEN: "//" : -1, 0
+	TOKEN: "X_JiApiA_End" : -1, 0
+LINE: ""
+	TOKEN: "" : -1, 0
+LINE: "	alignv 8"
+	TOKEN: "alignv" : -1, 0
+	TOKEN: "8" : 10, 8
+LINE: "label X_JiApiA"
+	TOKEN: "label" : -1, 0
+	TOKEN: "X_JiApiA" : -1, 0
+LINE: "	rlc    movh   d3    0xabcd"
+	TOKEN: "rlc" : -1, 0
+	TOKEN: "movh" : -1, 0
+	TOKEN: "d3" : -1, 0
+	TOKEN: "0xabcd" : 16, 43981
+LINE: "	rlc    addi   d3 d3 0x0123"
+	TOKEN: "rlc" : -1, 0
+	TOKEN: "addi" : -1, 0
+	TOKEN: "d3" : -1, 0
+	TOKEN: "d3" : -1, 0
+	TOKEN: "0x0123" : 16, 291
+LINE: "	rlc    mov    d2    16"
+	TOKEN: "rlc" : -1, 0
+	TOKEN: "mov" : -1, 0
+	TOKEN: "d2" : -1, 0
+	TOKEN: "16" : 10, 16
+LINE: "	srr    xor    d3 d2"
+	TOKEN: "srr" : -1, 0
+	TOKEN: "xor" : -1, 0
+	TOKEN: "d3" : -1, 0
+	TOKEN: "d2" : -1, 0
+LINE: "	b      j X_CallTableTailCall"
+	TOKEN: "b" : -1, 0
+	TOKEN: "j" : -1, 0
+	TOKEN: "X_CallTableTailCall" : -1, 0
+LINE: "// X_JiApiA_End"
+	TOKEN: "//" : -1, 0
+	TOKEN: "X_JiApiA_End" : -1, 0
+LINE: "	"
+	TOKEN: "" : -1, 0
+LINE: "// end section"
+	TOKEN: "//" : -1, 0
+	TOKEN: "end" : -1, 0
+	TOKEN: "section" : -1, 0
+LINE: ""
+	TOKEN: "" : -1, 0
+LINE: "section .text.X_util"
+	TOKEN: "section" : -1, 0
+	TOKEN: ".text.X_util" : -1, 0
+LINE: "section_intern 5"
+	TOKEN: "section_intern" : -1, 0
+	TOKEN: "5" : 10, 5
+LINE: "	x_memcpy_loop"
+	TOKEN: "x_memcpy_loop" : -1, 0
+LINE: "	X_memcpy_done"
+	TOKEN: "X_memcpy_done" : -1, 0
+LINE: "	x_memcmp_loop"
+	TOKEN: "x_memcmp_loop" : -1, 0
+LINE: "	X_memcmp_done"
+	TOKEN: "X_memcmp_done" : -1, 0
+LINE: "	X_memcmp_diff"
+	TOKEN: "X_memcmp_diff" : -1, 0
+LINE: ""
+	TOKEN: "" : -1, 0
+LINE: "	alignv 8"
+	TOKEN: "alignv" : -1, 0
+	TOKEN: "8" : 10, 8
+LINE: "label X_memcpy"
+	TOKEN: "label" : -1, 0
+	TOKEN: "X_memcpy" : -1, 0
+LINE: "	// Param: a4 - dest"
+	TOKEN: "//" : -1, 0
+	TOKEN: "Param:" : -1, 0
+	TOKEN: "a4" : -1, 0
+	TOKEN: "-" : -1, 0
+	TOKEN: "dest" : -1, 0
+LINE: "	// Param: a5 - src"
+	TOKEN: "//" : -1, 0
+	TOKEN: "Param:" : -1, 0
+	TOKEN: "a5" : -1, 0
+	TOKEN: "-" : -1, 0
+	TOKEN: "src" : -1, 0
+LINE: "	// Param: d4 - n"
+	TOKEN: "//" : -1, 0
+	TOKEN: "Param:" : -1, 0
+	TOKEN: "d4" : -1, 0
+	TOKEN: "-" : -1, 0
+	TOKEN: "n" : -1, 0
+LINE: "	rr      mov.aa  a2 a4"
+	TOKEN: "rr" : -1, 0
+	TOKEN: "mov.aa" : -1, 0
+	TOKEN: "a2" : -1, 0
+	TOKEN: "a4" : -1, 0
+LINE: "	rr      mov.a   a6 d4"
+	TOKEN: "rr" : -1, 0
+	TOKEN: "mov.a" : -1, 0
+	TOKEN: "a6" : -1, 0
+	TOKEN: "d4" : -1, 0
+LINE: "	brc     jeq     d4  0 X_memcpy_done"
+	TOKEN: "brc" : -1, 0
+	TOKEN: "jeq" : -1, 0
+	TOKEN: "d4" : -1, 0
+	TOKEN: "0" : 10, 0
+	TOKEN: "X_memcpy_done" : -1, 0
+LINE: "label X_memcpy_loop"
+	TOKEN: "label" : -1, 0
+	TOKEN: "X_memcpy_loop" : -1, 0
+LINE: "	bo s++  ld.bu   d3 a5 1"
+	TOKEN: "bo" : -1, 0
+	TOKEN: "s++" : -1, 0
+	TOKEN: "ld.bu" : -1, 0
+	TOKEN: "d3" : -1, 0
+	TOKEN: "a5" : -1, 0
+	TOKEN: "1" : 10, 1
+LINE: "	bo s++  st.b    d3 a4 1"
+	TOKEN: "bo" : -1, 0
+	TOKEN: "s++" : -1, 0
+	TOKEN: "st.b" : -1, 0
+	TOKEN: "d3" : -1, 0
+	TOKEN: "a4" : -1, 0
+	TOKEN: "1" : 10, 1
+LINE: "	sbr     loop    X_memcpy_loop a6"
+	TOKEN: "sbr" : -1, 0
+	TOKEN: "loop" : -1, 0
+	TOKEN: "X_memcpy_loop" : -1, 0
+	TOKEN: "a6" : -1, 0
+LINE: "label X_memcpy_done"
+	TOKEN: "label" : -1, 0
+	TOKEN: "X_memcpy_done" : -1, 0
+LINE: "	sr      ret     d2"
+	TOKEN: "sr" : -1, 0
+	TOKEN: "ret" : -1, 0
+	TOKEN: "d2" : -1, 0
+LINE: "// X_memcpy_End"
+	TOKEN: "//" : -1, 0
+	TOKEN: "X_memcpy_End" : -1, 0
+LINE: ""
+	TOKEN: "" : -1, 0
+LINE: "	alignv 8"
+	TOKEN: "alignv" : -1, 0
+	TOKEN: "8" : 10, 8
+LINE: "label X_memcmp"
+	TOKEN: "label" : -1, 0
+	TOKEN: "X_memcmp" : -1, 0
+LINE: "	// Param: a4 - src1"
+	TOKEN: "//" : -1, 0
+	TOKEN: "Param:" : -1, 0
+	TOKEN: "a4" : -1, 0
+	TOKEN: "-" : -1, 0
+	TOKEN: "src1" : -1, 0
+LINE: "	// Param: a5 - src2"
+	TOKEN: "//" : -1, 0
+	TOKEN: "Param:" : -1, 0
+	TOKEN: "a5" : -1, 0
+	TOKEN: "-" : -1, 0
+	TOKEN: "src2" : -1, 0
+LINE: "	// Param: d4 - n"
+	TOKEN: "//" : -1, 0
+	TOKEN: "Param:" : -1, 0
+	TOKEN: "d4" : -1, 0
+	TOKEN: "-" : -1, 0
+	TOKEN: "n" : -1, 0
+LINE: "	src         mov     d2   0"
+	TOKEN: "src" : -1, 0
+	TOKEN: "mov" : -1, 0
+	TOKEN: "d2" : -1, 0
+	TOKEN: "0" : 10, 0
+LINE: "	rr          mov.a   a6  d4"
+	TOKEN: "rr" : -1, 0
+	TOKEN: "mov.a" : -1, 0
+	TOKEN: "a6" : -1, 0
+	TOKEN: "d4" : -1, 0
+LINE: "	brc         jeq     d4   0 X_memcmp_done"
+	TOKEN: "brc" : -1, 0
+	TOKEN: "jeq" : -1, 0
+	TOKEN: "d4" : -1, 0
+	TOKEN: "0" : 10, 0
+	TOKEN: "X_memcmp_done" : -1, 0
+LINE: "label X_memcmp_loop"
+	TOKEN: "label" : -1, 0
+	TOKEN: "X_memcmp_loop" : -1, 0
+LINE: "	bo s++      ld.bu   d15 a5 1"
+	TOKEN: "bo" : -1, 0
+	TOKEN: "s++" : -1, 0
+	TOKEN: "ld.bu" : -1, 0
+	TOKEN: "d15" : -1, 0
+	TOKEN: "a5" : -1, 0
+	TOKEN: "1" : 10, 1
+LINE: "	bo s++      ld.bu   d3  a4 1"
+	TOKEN: "bo" : -1, 0
+	TOKEN: "s++" : -1, 0
+	TOKEN: "ld.bu" : -1, 0
+	TOKEN: "d3" : -1, 0
+	TOKEN: "a4" : -1, 0
+	TOKEN: "1" : 10, 1
+LINE: "	sbr d15     jne     X_memcmp_diff d3"
+	TOKEN: "sbr" : -1, 0
+	TOKEN: "d15" : -1, 0
+	TOKEN: "jne" : -1, 0
+	TOKEN: "X_memcmp_diff" : -1, 0
+	TOKEN: "d3" : -1, 0
+LINE: "	sbr -       loop    X_memcmp_loop a6"
+	TOKEN: "sbr" : -1, 0
+	TOKEN: "-" : -1, 0
+	TOKEN: "loop" : -1, 0
+	TOKEN: "X_memcmp_loop" : -1, 0
+	TOKEN: "a6" : -1, 0
+LINE: "label X_memcmp_done"
+	TOKEN: "label" : -1, 0
+	TOKEN: "X_memcmp_done" : -1, 0
+LINE: "	sr          ret     d2"
+	TOKEN: "sr" : -1, 0
+	TOKEN: "ret" : -1, 0
+	TOKEN: "d2" : -1, 0
+LINE: "label X_memcmp_diff"
+	TOKEN: "label" : -1, 0
+	TOKEN: "X_memcmp_diff" : -1, 0
+LINE: "	srr d15in   sub     d2  d3"
+	TOKEN: "srr" : -1, 0
+	TOKEN: "d15in" : -1, 0
+	TOKEN: "sub" : -1, 0
+	TOKEN: "d2" : -1, 0
+	TOKEN: "d3" : -1, 0
+LINE: "	sr          ret     d2"
+	TOKEN: "sr" : -1, 0
+	TOKEN: "ret" : -1, 0
+	TOKEN: "d2" : -1, 0
+LINE: "// X_memcmp_end"
+	TOKEN: "//" : -1, 0
+	TOKEN: "X_memcmp_end" : -1, 0
+LINE: ""
+	TOKEN: "" : -1, 0
+LINE: "// end section"
+	TOKEN: "//" : -1, 0
+	TOKEN: "end" : -1, 0
+	TOKEN: "section" : -1, 0
+LINE: ""
+	TOKEN: "" : -1, 0
+LINE: ""
+	TOKEN: "" : -1, 0

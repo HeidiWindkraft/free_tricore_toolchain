@@ -1,0 +1,84 @@
+
+global 2
+	.text.X_calltable X_JiApiA &- #-
+	.text.X_calltable X_JiApiB &- #-
+
+extern 2
+	X_interface &-
+	X_CallTablePanicCallout &-
+
+intern 2
+	.text.X_calltable X_CallTablePanic &- #-
+	.text.X_calltable X_CallTableTailCall &- #-
+
+
+section .text.X_calltable
+section_intern 1
+	X_CallTablePanicMovPcToA11 &-
+
+	alignv 8
+label X_CallTablePanic
+	jl crel X_CallTablePanicGetPc
+label X_CallTablePanicMovPcToA11
+	movh.a a2    his X_CallTablePanicCallout
+	lea    a2 a2 los X_CallTablePanicCallout
+	ji a2
+	j crel X_CallTablePanic
+// X_CallTablePanic_End
+
+	alignv 8
+label X_CallTableTailCall
+	movh.a a2    his X_interface
+	lea    a2 a2 los X_interface
+
+	// Check magic number
+	ld.w   d4 a2 0
+	movh   d5    0xabcd
+	addi   d5 d5 0x0123
+	jne    d4 d5 crel X_CallTablePanic
+
+	// Check major version
+	ld.w   d4 a2 4
+	movh   d5    0x0000
+	addi   d5 d5 0x0002
+	jne    d4 d5 crel X_CallTablePanic
+
+	// Check minor version
+	ld.w   d4 a2 8
+	movh   d5    0x0000
+	addi   d5 d5 0x0007
+	jlt    d4 d5 crel X_CallTablePanic
+
+	// Check argument
+	xor    d4 d3 d2
+	movh   d5    0xabcd
+	addi   d5 d5 0x0123
+	jne    d4 d5 crel X_CallTablePanic
+
+	// Tail call to procedure
+	addsc.a a3 a2 d2 0
+	ld.a    a3 a3 0
+	ji      a3
+	j       crel X_CallTablePanic		
+// X_CallTableTailCall_End
+
+	alignv 8
+label X_JiApiA
+	movh   d3    0xabcd
+	addi   d3 d3 0x0123
+	mov    d2    12
+	xor    d3 d3 d2
+	j X_CallTableTailCall
+// X_JiApiA_End
+
+	alignv 8
+label X_JiApiA
+	movh   d3    0xabcd
+	addi   d3 d3 0x0123
+	mov    d2    16
+	xor    d3 d3 d2
+	j X_CallTableTailCall
+// X_JiApiA_End
+	
+// end section
+

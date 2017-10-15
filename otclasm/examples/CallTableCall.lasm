@@ -1,0 +1,132 @@
+
+global 2
+	.text.X_calltable X_JiApiA &- #-
+	.text.X_calltable X_JiApiB &- #-
+	.text.X_util      X_memcpy &- #-
+	.text.X_util      X_memcmp &- #-
+
+extern 2
+	X_interface &-
+	X_CallTablePanicCallout &-
+
+intern 2
+	.text.X_calltable X_CallTablePanic &- #-
+	.text.X_calltable X_CallTableTailCall &- #-
+
+
+section .text.X_calltable
+section_intern 1
+	X_CallTablePanicMovPcToA11 &-
+
+	alignv 8
+label X_CallTablePanic
+	b   jl crel X_CallTablePanicGetPc
+label X_CallTablePanicMovPcToA11
+	rlc movh.a a2    his X_CallTablePanicCallout
+	bol lea    a2 a2 los X_CallTablePanicCallout
+	sr  ji a2
+	sb  j crel X_CallTablePanic
+// X_CallTablePanic_End
+
+	alignv 8
+label X_CallTableTailCall
+	rlc     movh.a a2    his X_interface
+	bol     lea    a2 a2 los X_interface
+
+	// Check magic number
+	bo s    ld.w   d4 a2 0
+	rlc     movh   d5    0xabcd
+	rlc     addi   d5 d5 0x0123
+	brr     jne    d4 d5 crel X_CallTablePanic
+
+	// Check major version
+	bo s    ld.w   d4 a2 4
+	rlc     movh   d5    0x0000
+	rlc     addi   d5 d5 0x0002
+	brr     jne    d4 d5 crel X_CallTablePanic
+
+	// Check minor version
+	bo s    ld.w   d4 a2 8
+	rlc     movh   d5    0x0000
+	rlc     addi   d5 d5 0x0007
+	brr     jlt    d4 d5 crel X_CallTablePanic
+
+	// Check argument
+	rr      xor    d4 d3 d2
+	rlc     movh   d5    0xabcd
+	rlc     addi   d5 d5 0x0123
+	brr     jne    d4 d5 crel X_CallTablePanic
+
+	// Tail call to procedure
+	rr      addsc.a a3 a2 d2 0
+	bo s    ld.a    a3 a3 0
+	sr      ji      a3
+	b       j       crel X_CallTablePanic		
+// X_CallTableTailCall_End
+
+	alignv 8
+label X_JiApiA
+	rlc    movh   d3    0xabcd
+	rlc    addi   d3 d3 0x0123
+	rlc    mov    d2    12
+	srr    xor    d3 d2
+	b      j X_CallTableTailCall
+// X_JiApiA_End
+
+	alignv 8
+label X_JiApiA
+	rlc    movh   d3    0xabcd
+	rlc    addi   d3 d3 0x0123
+	rlc    mov    d2    16
+	srr    xor    d3 d2
+	b      j X_CallTableTailCall
+// X_JiApiA_End
+	
+// end section
+
+section .text.X_util
+section_intern 5
+	x_memcpy_loop
+	X_memcpy_done
+	x_memcmp_loop
+	X_memcmp_done
+	X_memcmp_diff
+
+	alignv 8
+label X_memcpy
+	// Param: a4 - dest
+	// Param: a5 - src
+	// Param: d4 - n
+	rr      mov.aa  a2 a4
+	rr      mov.a   a6 d4
+	brc     jeq     d4  0 X_memcpy_done
+label X_memcpy_loop
+	bo s++  ld.bu   d3 a5 1
+	bo s++  st.b    d3 a4 1
+	sbr     loop    X_memcpy_loop a6
+label X_memcpy_done
+	sr      ret     d2
+// X_memcpy_End
+
+	alignv 8
+label X_memcmp
+	// Param: a4 - src1
+	// Param: a5 - src2
+	// Param: d4 - n
+	src         mov     d2   0
+	rr          mov.a   a6  d4
+	brc         jeq     d4   0 X_memcmp_done
+label X_memcmp_loop
+	bo s++      ld.bu   d15 a5 1
+	bo s++      ld.bu   d3  a4 1
+	sbr d15     jne     X_memcmp_diff d3
+	sbr -       loop    X_memcmp_loop a6
+label X_memcmp_done
+	sr          ret     d2
+label X_memcmp_diff
+	srr d15in   sub     d2  d3
+	sr          ret     d2
+// X_memcmp_end
+
+// end section
+
