@@ -1,0 +1,53 @@
+ABS
+ABSB
+B
+BIT
+BO
+BOL
+BRC
+BRN
+BRR
+RC
+RCPW
+RCR
+RCRR
+RCRW
+RLC
+RR
+RR1
+RR2
+RRPW
+RRR
+RRR1
+RRR2
+RRRR
+RRRW
+SB
+SBC
+SBR
+SBRN
+SC
+SLR
+SLRO
+SR
+SRC
+SRO
+SRR
+SRRS
+SSR
+SSRO
+SYS
+
+.alignv	ALIGNV
+.aligne ALIGNE
+.bytes  BYTES
+#	.bytes <number of bytes (max 12)> <up to 12 byte values>
+.dwarf  DWARF
+.i8     I8
+.i16    I16
+.i32    I32
+.i64    I64
+.iaddr  IADDR
+.reloc  RELOC
+:       LABEL
+
