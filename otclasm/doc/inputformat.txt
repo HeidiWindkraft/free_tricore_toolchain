@@ -8,34 +8,41 @@ otclasm must be able to deal with "# file line" directives.
 
 
 ==== Header:
-	- Global symbols
+	- Global symbols (which are used across different sections)
 	- External symbols
-	- Internal symbols
+	- Internal symbols (which are used across different sections)
 
 	=== Syntax
 	
-		global <number of global symbols n>
-			<section 0> <symbol 0>
-			<section 1> <symbol 1>
+		global <number of global symbols n> {
+			<section 0><symbol 0>
+			<section 1><symbol 1>
 			...
-			<section n-1> <symbol n-1>
+			<section n-1><symbol n-1>
+		}
 
 
-		extern <number of external symbols n>
+		extern <number of external symbols n> {
 			<symbol 0>
 			<symbol 1>
 			...
 			<symbol n-1>
+		}
 
-		intern <number of internal symbols n>
+		intern <number of internal symbols n> {
 			<symbol 0>
 			<symbol 1>
 			...
 			<symbol n-1>
+		}
+
+		// Number of symbols
+		The number of symbols given after global/extern/intern should be the actual number of symbols listed until '}'.
+		The number may be '-' which means "don't care". Implementation may or may not support this.
 
 		// symbol description
 		
-			<identifier> <address> <size>
+			<identifier> <address>
 		
 			<address>:
 				&-						// unresolved address
@@ -46,53 +53,77 @@ otclasm must be able to deal with "# file line" directives.
 					main &-					// unresolved address
 					main &a	0x80000100		// absolute address
 					main &r 256				// address relative to start of section in this file
-			
-			<size>:
-				-					// unresolved size
-				<size in bytes>		// size in bytes
-				
-				Examples:
-					main &- -
-					main &- 256
+
 
 	=== Example
 
-		global 1
-			.text main &- -
+		global 1 {
+			.text main &-
+		}
 
-		extern 2
-			readLine &- -
-			parseInt &- -
+		extern 2 {
+			readLine &-
+			parseInt &-
+		}
 
-		intern 5
-			mainLoopBegin &- -
-			mainLoopEnd &- -
-			fail &- -
-			ok &- -
-			next &- -
+		intern 5 {
+			mainLoopBegin &-
+			mainLoopEnd &-
+			fail &-
+			ok &-
+			next &-
+		}
 
 
 ==== Sections (code)
 	Multiple sections constaining instructions or raw data.
+
+	A section is introduced using the "section" keyword followed by the section name.
+
+	Each section may declare global, extern and intern symbols.
+	These declaration follow the similar rules as those in the file header.
+	However, the declaration of global symbols doesn't contain a section name here.
+
+	It is recommended to have one section per function and variable to allow fine grained linking.
+	
 	
 	=== Syntax
 	
-		begin <section name>
+		section <section name>
+			global <number of global symbols> {
+				<symbol 0>
+				<...>
+				<symbol n>
+			}
+			extern <number of extern symbols> {
+				<symbol 0>
+				<...>
+				<symbol n>
+			}
+			intern <number of internal symbols> {
+				<symbol 0>
+				<...>
+				<symbol n>
+			}
+		{
 			<intruction 0>
 			...
-		end
+			<instruction n>
+		}
 
 	=== Example
 
-		begin .text
+		section .text
+		{
 			aligne 2
-			: main
+			label main
 				srr mov.aa  6 10	// r6 = r10
 				sc  sub.a  32		// r10 = r10 - 32
 				<...>
 				ret
-		end
-		begin .rodata
+		}
+		section .rodata
+		{
 			raw32 0x11223344
 			sys nop
 			sr nop
@@ -100,7 +131,7 @@ otclasm must be able to deal with "# file line" directives.
 			raw32 lab main
 			raw16 hiu main
 			raw16 lou main
-		end
+		}
 
 	=== Pseudo intructions:
 		aligne x: align next item to 2**x
@@ -109,8 +140,9 @@ otclasm must be able to deal with "# file line" directives.
 		raw16  x
 		raw32  x
 		raw64  x: Add integer or label x as raw data
-		: x     : Define a label called x
-		end     : Ends the section
+		label  x: Define a label called x
+		}       : Ends the section
+		rawbites n <bytes>: Add raw bytes.
 
 	=== Accessing labels:
 		lab    x  : The absolute value of label x
@@ -123,27 +155,31 @@ otclasm must be able to deal with "# file line" directives.
 
 ==== Full example
 
-global 2
+global 2 {
 	.text.util readNextIntOrExit &- -
 	.text.util _readNextIntOrExit_end &- -
+}
 
-extern 3
+extern 3 {
 	eof &- -
 	readNextInt &- -
 	exit &- -
+}
 
-intern 1
+intern 1 {
 	reachedEof &- -
+}
 
-begin .text.util
+section .text.util
+{
 	alignv 4
-	: readNextIntOrExit
+	label readNextIntOrExit
 		b   call off eof
 		sbr jz   off reachedEof 2	// if (d2 == 0) goto reachedEof
 		b   j    off readNextInt	// tail call
-	: reachedEof
+	label reachedEof
 		b   j    off exit
-	: _readNextIntOrExit_end
-end
+	label _readNextIntOrExit_end
+}
 
 
