@@ -1,0 +1,69 @@
+
+==== Linker input format ====
+
+
+Example:
+
+options {
+	lto_peephole_optimization off
+	out stdout
+	//out file "output.elf"
+	//out shmem "output.elf"
+}
+
+filesets - {
+	fileset fs1 {
+		lasm file "demo*.o*"w
+		lasm file "demo.*\.o.*"r
+		lasm file "demo.o"
+		lasm shmemdel "demo.s"
+		lasm shmemkeep "demo2.s"
+	}
+}
+sectionsets - {
+	sectionset bssc0 {
+		".zbss.core0*"w
+		".zbss.shared.core0*"w
+		".bss.core0*"w
+		".bss.shared.core0*"w
+	}
+}
+
+memory - {
+	flash 0x80000000 +.. 0x4000 {
+		reserve - {
+			0x80000100 +.. 0x100
+		}
+	}
+	ram0 0xd0000000 ../ 0xd0001000
+}
+
+alloc {
+	switchto ram0
+	gotor 0
+	switchto flash
+	gotor 0
+	alignv 32
+	: TEXT_BEGIN
+	select image ".text.reset*"w from fs1
+	select image ".text*"w from fs1 {
+		scatter on // flow around reserved (if this isn't given and the segment collifes with an reserved area, the selected segments will be placed after the reserved area) ... TODO need groups.
+	}
+	: TEXT_END
+	: RODATA_BEGIN
+	select image ".rodata*"w from fs1 {
+		scatter on //flow around reserved
+	}
+	: RODATA_END
+	: DATA_INIT_BEGIN
+	select image ".data*"w from fs1
+	: DATA_INIT_END
+	switchto ram0
+	: DATA_BEGIN
+	select ram ".data*"w from fs1
+	: DATA_END
+	: BSS_BEGIN
+	select ram ".bss*"w from fs1
+	: BSS_END
+}
+
