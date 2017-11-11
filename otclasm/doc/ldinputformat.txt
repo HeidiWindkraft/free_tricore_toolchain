@@ -44,26 +44,36 @@ alloc {
 	switchto flash
 	gotor 0
 	alignv 32
-	: TEXT_BEGIN
-	select image ".text.reset*"w from fs1
-	select image ".text*"w from fs1 {
-		scatter on // flow around reserved (if this isn't given and the segment collifes with an reserved area, the selected segments will be placed after the reserved area) ... TODO need groups.
+	group {
+		scatter on // flow around reserved
+		: TEXT_BEGIN
+		select image ".text.reset*"w from fs1
+		select image ".text*"w from fs1
+		: TEXT_END
+		: RODATA_BEGIN
+		select image ".rodata*"w from fs1
+		: RODATA_END
 	}
-	: TEXT_END
-	: RODATA_BEGIN
-	select image ".rodata*"w from fs1 {
-		scatter on //flow around reserved
+	alignv 32
+	group {
+		// by default 'scatter' is off, so if this group hits a reserved area, it is placed after the reserved area.
+		: DATA_INIT_BEGIN
+		select image ".data*"w from fs1
+		: DATA_INIT_END
 	}
-	: RODATA_END
-	: DATA_INIT_BEGIN
-	select image ".data*"w from fs1
-	: DATA_INIT_END
 	switchto ram0
-	: DATA_BEGIN
-	select ram ".data*"w from fs1
-	: DATA_END
-	: BSS_BEGIN
-	select ram ".bss*"w from fs1
-	: BSS_END
+	alignv 32
+	group {
+		: DATA_BEGIN
+		select ram ".data*"w from fs1
+		: DATA_END
+		: BSS_BEGIN
+		select ram ".bss*"w from fs1
+		: BSS_END
+	}
+	goto 0xd0000100
+	group {
+		select ".whatever*"w from fs1
+	}
 }
 
