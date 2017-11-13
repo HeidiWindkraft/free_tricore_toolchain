@@ -1,13 +1,13 @@
 /* $Id$
  * (L)
 */
-#ifndef OTCLASM_TOKENSX_HXX
-#define OTCLASM_TOKENSX_HXX 1
+#ifndef OTCLASML_TOKENSX_HXX
+#define OTCLASML_TOKENSX_HXX 1
 
-#include <otclasm/tokens.hxx>
-#include <otclasm/diag.hxx>
+#include <otclasml/tokens.hxx>
+#include <otclasml/diag.hxx>
 
-namespace otclasm { namespace {
+namespace otclasml { namespace {
 
 
 regidx_t nextRegIdx(line_stream_t &stream) {

@@ -1,13 +1,13 @@
 /* $Id$
  * (L)
 */
-#ifndef OTCLASM_SECTION_HXX
-#define OTCLASM_SECTION_HXX 1
+#ifndef OTCLASML_SECTION_HXX
+#define OTCLASML_SECTION_HXX 1
 
-#include <otclasm/idtable.hxx>
-#include <otclasm/labeldecl.hxx>
+#include <otclasml/idtable.hxx>
+#include <otclasml/labeldecl.hxx>
 
-namespace otclasm { namespace {
+namespace otclasml { namespace {
 
 class SectionLabels {
 public:

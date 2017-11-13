@@ -1,12 +1,12 @@
 /* $Id$
  * (L)
 */
-#ifndef OTCLASM_ASMFILE_HXX
-#define OTCLASM_ASMFILE_HXX 1
+#ifndef OTCLASML_ASMFILE_HXX
+#define OTCLASML_ASMFILE_HXX 1
 
-#include <otclasm/idtable.hxx>
+#include <otclasml/idtable.hxx>
 
-namespace otclasm { namespace {
+namespace otclasml { namespace {
 
 class AsmFile {
 	token_t mFilename;

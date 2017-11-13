@@ -1,12 +1,12 @@
 /* $Id$
  * (L)
 */
-#ifndef OTCLASM_PARSER_HXX
-#define OTCLASM_PARSER_HXX 1
+#ifndef OTCLASML_PARSER_HXX
+#define OTCLASML_PARSER_HXX 1
 
 #include "tokens.hxx"
 
-namespace otclasm { namespace {
+namespace otclasml { namespace {
 
 class Parser {
 private:

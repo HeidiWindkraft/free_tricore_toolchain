@@ -1,8 +1,8 @@
 /* $Id$
  * (L)
 */
-#ifndef OTCLASM_STRINGVIEW_HXX
-#define OTCLASM_STRINGVIEW_HXX 1
+#ifndef OTCLASML_STRINGVIEW_HXX
+#define OTCLASML_STRINGVIEW_HXX 1
 
 //#include <cinttypes>
 //#include <array>
@@ -13,20 +13,20 @@
 #include <stdexcept>
 #include <boost/utility/string_view.hpp>
 
-#define OTCLASM_STRINGVIEW_DETAIL_GETSTRTONUM(INT, FUNC) \
+#define OTCLASML_STRINGVIEW_DETAIL_GETSTRTONUM(INT, FUNC) \
 	template <> struct GetStrToNum<INT> { static inline INT conv(const char *str, char **endptr, int base) { return FUNC(str, endptr, base); } }
 	
 
-namespace otclasm { namespace {
+namespace otclasml { namespace {
 
 typedef boost::string_view StringView;
 
 namespace detail {
 	template <typename T> struct GetStrToNum;
-	OTCLASM_STRINGVIEW_DETAIL_GETSTRTONUM(long, strtol);
-	OTCLASM_STRINGVIEW_DETAIL_GETSTRTONUM(long long, strtoll);
-	OTCLASM_STRINGVIEW_DETAIL_GETSTRTONUM(unsigned long, strtoul);
-	OTCLASM_STRINGVIEW_DETAIL_GETSTRTONUM(unsigned long long, strtoull);
+	OTCLASML_STRINGVIEW_DETAIL_GETSTRTONUM(long, strtol);
+	OTCLASML_STRINGVIEW_DETAIL_GETSTRTONUM(long long, strtoll);
+	OTCLASML_STRINGVIEW_DETAIL_GETSTRTONUM(unsigned long, strtoul);
+	OTCLASML_STRINGVIEW_DETAIL_GETSTRTONUM(unsigned long long, strtoull);
 	
 }
 

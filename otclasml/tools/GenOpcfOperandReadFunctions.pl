@@ -7,14 +7,14 @@ print <<EOF;
 /* \$Id\$
  * (L)
 */
-#ifndef OTCLASM_OPERAND_READERS_HXX
-#define OTCLASM_OPERAND_READERS_HXX 1
+#ifndef OTCLASML_OPERAND_READERS_HXX
+#define OTCLASML_OPERAND_READERS_HXX 1
 
-#include <otclasm/insnir.hxx>
-#include <otclasm/tokensx.hxx>
+#include <otclasml/insnir.hxx>
+#include <otclasml/tokensx.hxx>
 
 
-namespace otclasm { namespace {
+namespace otclasml { namespace {
 
 EOF
 ;
@@ -61,7 +61,7 @@ print <<EOF;
 
 }}
 
-#endif /* OTCLASM_OPERAND_READERS_HXX */
+#endif /* OTCLASML_OPERAND_READERS_HXX */
 
 EOF
 ;

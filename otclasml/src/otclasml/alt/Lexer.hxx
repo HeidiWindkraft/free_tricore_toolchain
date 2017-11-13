@@ -1,14 +1,14 @@
 /* $Id$
  * (L)
 */
-#ifndef OTCLASM_LEXER_HXX
-#define OTCLASM_LEXER_HXX 1
+#ifndef OTCLASML_LEXER_HXX
+#define OTCLASML_LEXER_HXX 1
 
-#include "StringView.hxx"
+#include <otclasml/StringView.hxx>
 
 /* Lexer for a simple line-based white-space-separated language.
 */
-namespace otclasm { namespace {
+namespace otclasml { namespace {
 
 namespace Lexing {
 	typedef const char *ccharit;
@@ -155,36 +155,17 @@ class Lexer {
 public:
 	typedef Lexing::Token Token;
 
-public:
-	class MemMng {
-		virtual ~MemMng() {
-		};
-	};
-
 private:
 	typedef Lexing::ccharit ccharit;
 	StringView mAll;
 	ccharit    mCur;
-	MemMng     *mMem; // TODO this needs to be placed into the File class! This file class must live until everything is processed...
 
 public:
-	Lexer() : mAll(nullptr, 0), mCur(nullptr), mMem(nullptr) {}
-	Lexer(Lexer const &r) = delete;
-	Lexer(Lexer &&r) : mAll(r.mAll), mCur(r.mCur), mMem(r.mMem) {
-		r.mMem = nullptr;
-	}
-
-public:
-	~Lexer() {
-		destroy();
-	}
-
-private:
-	void destroy() {
-		if (mMem != nullptr) {
-			delete mMem;
-			mMem = nullptr;
-		}
+	Lexer() : mAll(nullptr, 0), mCur(nullptr) {}
+	Lexer(Lexer const &r) = default;
+	Lexer(Lexer &&r) : mAll(r.mAll), mCur(r.mCur) {}
+	explicit Lexer(StringView strv) {
+		reset(strv);
 	}
 
 public:
@@ -204,36 +185,9 @@ public:
 	}
 
 public:
-	// Create a memory mapped file source.
-	struct MemMngViaMemap : MemMng {
-		boost::iostreams::mapped_file_source mMmf;	
-	};
-	void openFile(std::string const &path) {
-		destroy();
-
-		MemMngViaMemap &mm = *(new MemMngViaMemap());
-		mm.mMmf.open(path);
-
-		mAll = StringView(mm.mMmf.data(), mm.mMmf.size());
+	void resetView(StringView strv) {
+		mAll = strv;
 		mCur = mAll.cbegin();
-	}
-
-public:
-	// Read a whole stream to memory, see also
-	// https://stackoverflow.com/questions/116038/what-is-the-best-way-to-read-an-entire-file-into-a-stdstring-in-c
-	struct MemMngViaString : MemMng {
-		std::string mStr;
-	};
-	void openStream(std::istream &in) {
-		destroy();
-
-		MemMngViaString &mm = *(new MemMngViaString());
-		stringstream sstr;
-		sstr << in.rdbuf();
-		mm.mStr = sstr.str();
-
-		mAll = StringView(mm.mStr.data(), mm.mStr.size());
-		mCur = mAll.cbegin();	
 	}
 };
 

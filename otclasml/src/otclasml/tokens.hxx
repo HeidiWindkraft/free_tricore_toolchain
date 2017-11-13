@@ -1,8 +1,8 @@
 /* $Id$
  * (L)
 */
-#ifndef OTCLASM_TOKENS_HXX
-#define OTCLASM_TOKENS_HXX 1
+#ifndef OTCLASML_TOKENS_HXX
+#define OTCLASML_TOKENS_HXX 1
 
 #include <iostream>
 #include <string>
@@ -10,7 +10,7 @@
 #include <stdexcept>
 #include <sstream>
 
-namespace otclasm { namespace {
+namespace otclasml { namespace {
 
 typedef std::string			token_t, line_t;
 typedef std::istream		istream_t;

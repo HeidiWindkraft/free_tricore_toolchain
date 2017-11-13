@@ -1,12 +1,12 @@
 /* $Id$
  * (L)
 */
-#ifndef OTCLASM_LABELDECL_HXX
-#define OTCLASM_LABELDECL_HXX 1
+#ifndef OTCLASML_LABELDECL_HXX
+#define OTCLASML_LABELDECL_HXX 1
 
-#include <otclasm/tokens.hxx>
+#include <otclasml/tokens.hxx>
 
-namespace otclasm { namespace {
+namespace otclasml { namespace {
 
 struct LabelDecl {
 	token_t id; // id contains section, if the section flag is set. -- this means that the whole section name has to be given as one token.

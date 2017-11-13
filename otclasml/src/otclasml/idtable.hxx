@@ -1,12 +1,12 @@
 /* $Id$
  * (L)
 */
-#ifndef OTCLASM_IDTABLE_HXX
-#define OTCLASM_IDTABLE_HXX 1
+#ifndef OTCLASML_IDTABLE_HXX
+#define OTCLASML_IDTABLE_HXX 1
 
 #include <algorithm>
 
-namespace otclasm { namespace {
+namespace otclasml { namespace {
 
 /* IdTable
  *
