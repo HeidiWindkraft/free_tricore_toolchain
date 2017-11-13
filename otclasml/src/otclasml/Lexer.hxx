@@ -18,7 +18,7 @@ namespace Lexing {
 			if (*it != '"') continue;
 			// found a '"', check whether it is escaped...
 			unsigned backslashCount = 0;
-			for (charit jt = it - 1; jt >= begin; --jt) {
+			for (ccharit jt = it - 1; jt >= begin; --jt) {
 				if (*jt == '\\') {
 					++backslashCount;
 				} else {
@@ -32,17 +32,17 @@ namespace Lexing {
 		return end; // found no end of string literal.
 	}
 
-	bool isComment(charit it, charit begin, charit end) {
+	bool isComment(ccharit it, ccharit begin, ccharit end) {
 		// This could be a comment.
 		// Check that this '/' isn't part of a token, since this language is whitespace-separated.
-		charit next = it + 1, before = it - 1;
+		ccharit next = it + 1, before = it - 1;
 		return (*it == '/') && (
 			((it == begin) || (std::isspace(*before)))
 				&& ((next != end) && (*next == '/'))
 		);
 	}
 
-	void findEndOfLine(ccharit begin, ccharit end, ccharit &eol, charit &next) {
+	void findEndOfLine(ccharit begin, ccharit end, ccharit &eol, ccharit &next) {
 		for (ccharit it = begin; it != end; ++it) {
 			char c = *it;
 			switch (c) {
@@ -66,7 +66,8 @@ namespace Lexing {
 				if (isComment(it, begin, end)) {
 					eol = it;
 					// Now find the actual end of line:
-					for (ccharit jt = it + 2; jt != end; ++jt) {
+					ccharit jt;
+					for (jt = it + 2; jt != end; ++jt) {
 						if (*jt == '\n') {
 							++jt;
 							break;
@@ -79,6 +80,7 @@ namespace Lexing {
 			}
 			default:
 				// skip ...
+				;
 			}
 		}
 		// EOF is end of line.
@@ -100,22 +102,25 @@ private:
 
 private:
 	void skipSpaceAndComment() {
-		for (; mCur != mAll.cend(); ++mCur) {
+		using namespace Lexing;
+		for (; mCur != ccend(mAll); ++mCur) {
 			if (!std::isspace(*mCur)) {
-				if (isComment(mCur, mCur, mAll.cend())) {
-					mCur = mAll.cend();
+				if (isComment(mCur, mCur, ccend(mAll))) {
+					mCur = ccend(mAll);
 				}
 				break;
 			}
 		}
 	}
 	void adjustAfterReset() {
+		using namespace Lexing;
 		// Skip leading whitespace.
-		mCur = mAll.cbegin();
+		mCur = ccbegin(mAll);
 		skipSpaceAndComment();
 	}
 	void munchNonSpace() {
-		for (; mCur != mAll.cend(); ++mCur) {
+		using namespace Lexing;
+		for (; mCur != ccend(mAll); ++mCur) {
 			if (std::isspace(*mCur)) {
 				break;
 			}
@@ -123,10 +128,17 @@ private:
 	}
 
 public:
+	void resetView(StringView sv) {
+		mAll = sv;
+		adjustAfterReset();
+	}
+
+public:
 	bool hasNext() const {
-		return mCur != mAll.cend();
+		return mCur != ccend(mAll);
 	}
 	bool getNext(Token &tok) {
+		using namespace Lexing;
 		if (!hasNext()) {
 			tok = StringView(nullptr, 0);
 			return false;
@@ -135,12 +147,13 @@ public:
 		char c = *mCur;
 		switch (c) {
 		case '"': {
-			mCur = findEndOfStringLiteral(mCur, mAll.cend());
+			mCur = findEndOfStringLiteral(mCur, ccend(mAll));
 			// continue parsing the suffix...
 			break;
 		}
 		default:
 			// nothing special to do...
+			;
 		}
 		// Advance iterator until there's whitespace.
 		munchNonSpace();
@@ -148,6 +161,12 @@ public:
 		// Find begin of next token.
 		skipSpaceAndComment();
 		return true;
+	}
+	StringView getRemaining() const {
+		return StringView(mCur, ccend(mAll) - mCur);
+	}
+	StringView getAll() const {
+		return mAll;
 	}
 };
 
@@ -165,19 +184,20 @@ public:
 	Lexer(Lexer const &r) = default;
 	Lexer(Lexer &&r) : mAll(r.mAll), mCur(r.mCur) {}
 	explicit Lexer(StringView strv) {
-		reset(strv);
+		resetView(strv);
 	}
 
 public:
 	bool eof() const {
-		return mCur == mAll.cend();
+		return mCur == ccend(mAll);
 	}
 	bool nextLine(LineLexer &ll) {
+		using namespace Lexing;
 		if (eof()) {
 			return false;
 		}
-		charit eol, next;
-		findEndOfLine(mCur, mAll.cend(), eol, next);
+		ccharit eol, next;
+		findEndOfLine(mCur, ccend(mAll), eol, next);
 		StringView sw(mCur, (eol - mCur));
 		mCur = next;
 		ll.resetView(sw);
@@ -187,7 +207,7 @@ public:
 public:
 	void resetView(StringView strv) {
 		mAll = strv;
-		mCur = mAll.cbegin();
+		mCur = ccbegin(mAll);
 	}
 };
 

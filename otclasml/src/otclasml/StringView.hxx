@@ -21,6 +21,10 @@ namespace otclasml { namespace {
 
 typedef boost::string_view StringView;
 
+const char *ccbegin(StringView sv) { return &*sv.cbegin(); }
+const char *ccend(StringView sv) { return &*sv.cend(); }
+
+
 namespace detail {
 	template <typename T> struct GetStrToNum;
 	OTCLASML_STRINGVIEW_DETAIL_GETSTRTONUM(long, strtol);
@@ -31,10 +35,9 @@ namespace detail {
 }
 
 enum StringView_toInt_error_e {
-	StringView_toInt_UNKNOWN_ERROR = -1000;
-	StringView_toInt_EMPTY_STRING  = -1001;
-	StringView_toInt_LIMIT         = -1002;
-	
+	StringView_toInt_UNKNOWN_ERROR = -1000,
+	StringView_toInt_EMPTY_STRING  = -1001,
+	StringView_toInt_LIMIT         = -1002,
 };
 
 StringView::const_iterator getFirstNonSpaceConstIter(StringView str) {
@@ -70,11 +73,13 @@ int tryToInt(StringView str, int radix, INT &out) {
 	if (str.empty()) {
 		return StringView_toInt_EMPTY_STRING;
 	}
-	StringView::const_iterator it  = getFirstNonSpaceConstIter(it),
+	StringView::const_iterator it  = getFirstNonSpaceConstIter(str.begin()),
 	                           end = str.end();
 	if ((end - it) >= (BUFSIZE-1)) {
+		// TODO count the actual number of digits - underscores don't count.
 		return StringView_toInt_LIMIT;
 	}
+	// TODO don't copy underscores.
 	char *bufend = std::copy(it, end, &buf[0]);
 	*bufend = '\0';
 	if (bufend == buf) {
@@ -88,7 +93,7 @@ int tryToInt(StringView str, int radix, INT &out) {
 class StringViewToIntException : std::invalid_argument {
 	int mReturnValue;
 public:
-	StringViewToIntException(int returnValue) : mReturnValue(returnValue) {}
+	StringViewToIntException(int returnValue) : std::invalid_argument("StringViewToIntException"), mReturnValue(returnValue) {}
 	int getReturnValue() const { return mReturnValue; }
 };
 
@@ -102,6 +107,76 @@ INT toInt(StringView str, int radix = 0) {
 	return out;
 }
 
+uint64_t toUInt64(StringView str, int radix = 0) {
+	return toInt<uint64_t>(str, radix);
+}
+
+namespace getIntRadixErrors {
+	enum values {
+		NOT_A_NUMBER = -1,
+		NOT_ENOUGH_DIGITS = -2,
+		ILLEGAL_CHARACTER_LE10 = -3,
+		ILLEGAL_CHARACTER_GT10 = -4,
+		UNKNOWN_RADIX = -5
+	};
+}
+
+// Returns the integer base of a token.
+// Returns a negative number if the token isn't an integer.
+int getIntRadix(StringView tok) {
+	if (tok.size() == 0) {
+		return getIntRadixErrors::NOT_A_NUMBER;
+	}
+	char f = tok[0];
+	if (('0' > f) || (f > '9')) {
+		return getIntRadixErrors::NOT_A_NUMBER;
+	}
+	if (tok.size() < 2) {
+		return 10; // This is a decimal number (0 here also is a decimal number).
+	}
+	char s = std::tolower(tok[1]);
+	int radix = -1;
+	if (f == '0') {
+		switch (s) {
+		case 'b': radix =  2; break;
+		case 'o': radix =  8; break;
+		case 'x': radix = 16; break;
+		}
+	}
+	if ((radix == -1) && std::isdigit(s)) {
+		radix = 10;
+	}
+	if (radix == -1) {
+		return getIntRadixErrors::UNKNOWN_RADIX;
+	}
+	if ((radix != 10) && (tok.size() < 3)) {
+		return getIntRadixErrors::NOT_ENOUGH_DIGITS;
+	}
+	StringView::const_iterator begin, end;
+	begin = tok.begin();
+	end = tok.end();
+	if (radix != 10) {
+		begin += 2;
+	}
+	if (radix <= 10) {
+		for (StringView::const_iterator it = begin; it < end; ++it) {
+			char c = *it;
+			unsigned val = c - '0';
+			if ((val >= (unsigned)radix) && (c != '_')) {
+				return getIntRadixErrors::ILLEGAL_CHARACTER_LE10;
+			}
+		}
+	} else {
+		for (StringView::const_iterator it = begin; it < end; ++it) {
+			char c = std::tolower(*it);
+			bool valid = std::isdigit(c) || (('a' <= c) && (c <= 'f')) || (c == '_');
+			if (!valid) {
+				return getIntRadixErrors::ILLEGAL_CHARACTER_GT10;
+			}
+		}
+	}
+	return radix;
+}
 
 } }
 

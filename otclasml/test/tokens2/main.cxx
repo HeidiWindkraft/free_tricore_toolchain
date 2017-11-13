@@ -1,30 +1,38 @@
 #include <iostream>
 
-#include <otclasml/tokens.hxx>
+#include <otclasml/Lexer.hxx>
+#include <otclasml/io/InFile.hxx>
 
 
 using namespace otclasml;
+using namespace otclasml::io;
 using namespace std;
 
 
-int main(void) {
+int main(int argc, const char *argv[]) {
 
-	line_t line;
-	line_stream_t linestream;
-	token_t tok;
+	InFile ifile;
+	Lexer lexer;
+	LineLexer llex;
+	StringView tok;
 
-	while (!cin.eof()) {
-		line.clear();
-		nextLine(cin, line);
-		cout << "LINE: \"" << line << "\"" << endl;
-		getStreamFromLine(line, linestream);
-		while (!linestream.eof()) {
-			tok.clear();
-			nextToken(linestream, tok);
+	if (argc == 1) {
+		ifile.openCharStream(std::cin);
+	} else {
+		cout << "FILE" << endl;
+		ifile.openFile(argv[1]);
+	}
+	lexer.resetView(ifile.strv());
+
+	while (!lexer.eof()) {
+		lexer.nextLine(llex);
+		cout << "LINE: \"" << llex.getAll() << "\"" << endl;
+		while (llex.hasNext()) {
+			llex.getNext(tok);
 			int radix = getIntRadix(tok);
 			uint64_t val = 0;
 			if (radix > 0) {
-				val = getInt(tok, radix);
+				val = toUInt64(tok, radix);
 			}
 			cout << "\tTOKEN: \"" << tok << "\" : " << radix << ", " << val << endl;
 		}

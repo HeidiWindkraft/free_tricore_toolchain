@@ -4,10 +4,13 @@
 #ifndef OTCLASML_INFILE_HXX
 #define OTCLASML_INFILE_HXX 1
 
-#include <boost/iostreams/mapped_file.hxx>
+#include <istream>
+#include <sstream>
+
+#include <boost/iostreams/device/mapped_file.hpp>
 // #include <boost/interprocess/managed_shared_memory.hpp>
 
-#include "StringView.hxx"
+#include <otclasml/StringView.hxx>
 
 namespace otclasml { namespace io { namespace {
 
@@ -37,10 +40,10 @@ private:
 	}
 
 private:
-	struct MemMngViaMmap : MemMng {
+	struct MemMngViaMmap : InFileMemMng {
 		boost::iostreams::mapped_file_source mMmf;	
 	};
-	struct MemMngViaString : MemMng {
+	struct MemMngViaString : InFileMemMng {
 		std::string mStr;
 	};
 
@@ -62,7 +65,7 @@ public:
 		destroy();
 
 		MemMngViaString &mm = *(new MemMngViaString());
-		stringstream sstr;
+		std::stringstream sstr;
 		sstr << in.rdbuf();
 		mm.mStr = sstr.str();
 
