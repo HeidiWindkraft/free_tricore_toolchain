@@ -5,7 +5,10 @@
 Example:
 
 options {
-	lto_peephole_optimization off
+	allow_lto off
+	lto_peephole_fnaddr off     // Replace far calls to function addresses by relative or absolute calls if possible (default: off)
+	lto_peephole_absaddr off    // Replace loading the address of an object by accesses to the absolute address if possible (default: off)
+	lto_peephole_sda off        // Replace loading the address of an object by accesses relative to A0 or A1 if possible (default: off)
 	out stdout
 	//out file "output.elf"
 	//out shmem "output.elf"
