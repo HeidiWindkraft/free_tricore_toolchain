@@ -1,4 +1,3 @@
-FILE
 LINE: ""
 LINE: "global 2"
 	TOKEN: "global" : -1, 0

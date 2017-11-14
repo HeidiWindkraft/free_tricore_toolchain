@@ -19,7 +19,6 @@ int main(int argc, const char *argv[]) {
 	if (argc == 1) {
 		ifile.openCharStream(std::cin);
 	} else {
-		cout << "FILE" << endl;
 		ifile.openFile(argv[1]);
 	}
 	lexer.resetView(ifile.strv());
