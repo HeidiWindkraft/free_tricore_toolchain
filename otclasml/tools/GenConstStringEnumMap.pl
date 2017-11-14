@@ -5,19 +5,31 @@ use strict;
 
 my $USAGE = <<EOF;
 Usage:
-	GenConstStringEnumMap namespace id path/to/header.hxx path/to/cxxfile.cxx path/to/header/from/includepaths [include_util_prefix] < ids.txt
+	GenConstStringEnumMap namespace id path/to/header.hxx path/to/cxxfile.cxx path/to/header/from/includepaths (lc|id) [include_util_prefix] < ids.txt
 EOF
 ;
 
-my ($aNamespace, $aId, $aHeader, $aCxxFile, $aHeaderInclude, $aInclude) = @ARGV;
+my ($aNamespace, $aId, $aHeader, $aCxxFile, $aHeaderInclude, $aLc, $aInclude) = @ARGV;
 
-die $USAGE unless (defined $aNamespace && defined $aId && defined $aHeader && defined $aCxxFile && defined $aHeaderInclude);
+die $USAGE unless (defined $aNamespace && defined $aId && defined $aHeader && defined $aCxxFile && defined $aHeaderInclude && defined $aLc);
 
-$aInclude ||= "otct";
+$aInclude ||= "otclasml";
+
+my $fnLc = sub {
+	my ($a) = @_;
+	return lc $a;
+};
+my $fnId = sub {
+	my ($a) = @_;
+	return $a;
+};
 
 my $aUId = uc $aId;
 my $aLId = lc $aId;
+my $aUcId = (substr $aUId, 0, 1).(substr $aLId, 1);
 my $aUNamespace = uc $aNamespace;
+my $aKeyFn = ($aLc eq 'lc') ? $fnLc : $fnId;
+
 my %map = ( );
 
 
@@ -34,6 +46,7 @@ while (my $line = <STDIN>) {
 		$str = $1;
 		$enum = $2;
 	}
+	$str = $aKeyFn->($str);
 	my $cur = $map{$str};
 	if ((defined $cur) && ($cur ne $enum)) {
 		die "ERROR: Conflicting mappings for \"$str\": \"$cur\" and \"$enum\".";
@@ -71,7 +84,7 @@ print $fHeader <<EOF;
 namespace $aNamespace { namespace $aId {
 
 // There are $nkeys entries.
-enum ${aLId}_e : $inttype {
+enum ${aLId}s_e : $inttype {
 EOF
 ;
 
@@ -84,9 +97,9 @@ print $fHeader <<EOF;
 	NENTRIES
 }; /* enum */
 
-extern ${aLId}_e ${aLId}FromString(StringView s);
+extern ${aLId}s_e to$aUcId(StringView s);
 extern StringView ${aLId}ToString(uintn_t val);
-inline StringView toString(${aLId}_e val) { return ${aLId}ToString(($inttype) val); }
+inline StringView toString(${aLId}s_e val) { return ${aLId}ToString(($inttype) val); }
 
 } } /* namespaces */
 #endif /* _HXX */
@@ -118,7 +131,7 @@ print $fCxxFile <<EOF;
 
 namespace $aNamespace { namespace $aId {
 
-static ConstStringMap::String ${aLId}_strings[NENTRIES] = {
+static ConstStringMap::String ${aLId}_strings[NENTRIES + 1] = {
 EOF
 ;
 
@@ -136,10 +149,10 @@ print $fCxxFile <<EOF;
 	{ \"$endString\", $lenEnd }
 }; /* strings */
 
-${aLId}_e ${aLId}FromString(StringView s) {
-	return (${aLId}_e) ConstStringMap::fromString(s, ${aLId}_strings, (uintn_t) NENTRIES);
+${aLId}s_e to$aUcId(StringView s) {
+	return (${aLId}s_e) ConstStringMap::fromString(s, ${aLId}_strings, (uintn_t) NENTRIES);
 }
-extern StringView ${aLId}ToString(uintn_t val) {
+StringView ${aLId}ToString(uintn_t val) {
 	return ConstStringMap::toString(val, ${aLId}_strings, (uintn_t) NENTRIES);
 }
 

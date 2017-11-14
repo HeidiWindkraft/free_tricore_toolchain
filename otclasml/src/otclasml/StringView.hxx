@@ -178,6 +178,30 @@ int getIntRadix(StringView tok) {
 	return radix;
 }
 
+#if 0
+template <class TA, class TB>
+int compareTransformed(StringView sva, StringView svb, TA ta, TB tb) {
+	uintptr_t n = std::min(sva.size(), svb.size());
+	const char *da = sva.data();
+	const char *db = svb.data();
+	for (uintptr_t i = 0; i < n; ++i) {
+		uintptr_t ca = (uintptr_t) ta(da[i]),
+		          cb = (uintptr_t) tb(db[i]);
+		if (ca < cb) return -1;
+		if (ca > cb) return 1;
+	}
+	if (sva.size() == svb.size()) return 0;
+	if (sva.size() < svb.size()) return -1;
+	return 1;
+}
+
+int compareI(StringView a, StringView b) {
+	auto lc = [](char c) { return std::tolower(c); };
+	return compareTransformed(a, b, lc, lc);
+}
+#endif
+
+
 } }
 
 #endif /* _HXX */
