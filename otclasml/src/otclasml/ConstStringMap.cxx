@@ -13,7 +13,7 @@ namespace {
 		return sv(a).compare(sv(b));
 	}
 	struct Less {
-		bool operator< (String const &a, String const &b) const {
+		bool operator() (String const &a, String const &b) const {
 			return compare(a,b) < 0;
 		}
 	};
@@ -23,7 +23,7 @@ uintptr_t fromString(StringView key, String const *map, uintptr_t nValidEntries)
 {
 	String k = { key.data(), key.size() };
 	String const *mapend = map + nValidEntries;
-	String const *found = std::lower_bound(map, mapend, Less());
+	String const *found = std::lower_bound(map, mapend, k, Less());
 	if (compare(k, *found) == 0) return (uintptr_t)(found - map);
 	return nValidEntries;
 }

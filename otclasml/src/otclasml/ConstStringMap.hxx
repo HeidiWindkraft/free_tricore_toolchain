@@ -28,7 +28,7 @@ namespace otclasml { namespace ConstStringMap {
 
 	/* toString - Converts the given index to a string.
 	*/
-	StringView toString(uintptr_t index, String const *map, uintptr_t nValidEntries)
+	StringView toString(uintptr_t index, String const *map, uintptr_t nValidEntries);
 
 #if 0
 	/* fromStringI - Get the index of a given key string in the given map (case insensitive)

@@ -5,13 +5,13 @@ use strict;
 
 my $USAGE = <<EOF;
 Usage:
-	GenConstStringEnumMap namespace id path/to/header.hxx path/to/cxxfile.cxx path/to/header/from/includepaths (lc|id) [include_util_prefix] < ids.txt
+	GenConstStringEnumMap namespace id path/to/header.hxx path/to/cxxfile.cxx path/to/header/from/includepaths (lc|id) path/to/test.hxx [include_util_prefix] < ids.txt
 EOF
 ;
 
-my ($aNamespace, $aId, $aHeader, $aCxxFile, $aHeaderInclude, $aLc, $aInclude) = @ARGV;
+my ($aNamespace, $aId, $aHeader, $aCxxFile, $aHeaderInclude, $aLc, $aTest, $aInclude) = @ARGV;
 
-die $USAGE unless (defined $aNamespace && defined $aId && defined $aHeader && defined $aCxxFile && defined $aHeaderInclude && defined $aLc);
+die $USAGE unless (defined $aNamespace && defined $aId && defined $aHeader && defined $aCxxFile && defined $aHeaderInclude && defined $aLc && defined $aTest);
 
 $aInclude ||= "otclasml";
 
@@ -165,5 +165,65 @@ close ($fCxxFile);
 $fCxxFile = undef;
 # #### ####
 # END of CXX_FILE
+# ### ####
+
+# #### ####
+# TEST_FILE
+# ### ####
+my $fTestFile;
+open ($fTestFile, '>', $aTest) or die "Could not open \"$aTest\" for writing: $!";
+print $fTestFile <<EOF;
+/* \$Id\$
+ * (L)
+*/
+#ifndef TEST_${aUNamespace}_${aUId}_HXX
+#define TEST_${aUNamespace}_${aUId}_HXX
+
+#include <$aHeaderInclude>
+#include <testfx.hxx>
+
+void testConstStringMap${aUcId}(Tests &t) {
+	using namespace $aNamespace::$aId;
+	using namespace $aNamespace;
+
+	t.startGroup("testConstStringMap${aUcId}");
+	t.start("to$aUcId");
+EOF
+;
+
+for my $key (@keys) {
+	my $len = length $key;
+	my $val = $map{$key};
+	print $fTestFile "\tt.eq($val, to$aUcId(\"$key\"), \"$key\");\n";
+}
+
+print $fTestFile <<EOF;
+	t.eq(NENTRIES, to$aUcId("//"), "invalid entry");
+	t.stop();
+
+	t.start("toString");
+EOF
+;
+
+for my $key (@keys) {
+	my $len = length $key;
+	my $val = $map{$key};
+	print $fTestFile "\tt.eq(StringView(\"$key\", $len), toString($val), \"$key\");\n";
+}
+
+print $fTestFile <<EOF;
+	t.stop();
+	t.stopGroup();
+} // testConstStringMap${aUcId}
+
+#endif // _HXX
+
+EOF
+;
+
+close ($fTestFile);
+$fTestFile = undef;
+# #### ####
+# END of TEST_FILE
 # ### ####
 

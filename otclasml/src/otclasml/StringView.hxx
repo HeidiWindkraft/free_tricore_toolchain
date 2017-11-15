@@ -17,9 +17,11 @@
 	template <> struct GetStrToNum<INT> { static inline INT conv(const char *str, char **endptr, int base) { return FUNC(str, endptr, base); } }
 	
 
-namespace otclasml { namespace {
+namespace otclasml {
 
 typedef boost::string_view StringView;
+
+namespace {
 
 const char *ccbegin(StringView sv) { return &*sv.cbegin(); }
 const char *ccend(StringView sv) { return &*sv.cend(); }
