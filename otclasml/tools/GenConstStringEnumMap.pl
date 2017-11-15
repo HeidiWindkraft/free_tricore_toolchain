@@ -131,7 +131,7 @@ print $fCxxFile <<EOF;
 
 namespace $aNamespace { namespace $aId {
 
-static ConstStringMap::String ${aLId}_strings[NENTRIES + 1] = {
+static const ConstStringMap::String ${aLId}_strings[NENTRIES + 1] = {
 EOF
 ;
 
