@@ -6,12 +6,35 @@
 
 #include <otclasml/cmaps/opcf.hxx>
 #include <testfx.hxx>
+#include <otclasml/ConstStringMapCmp.hxx>
+#include <algorithm>
+#include <vector>
 
 void testConstStringMapOpcf(Tests &t) {
 	using namespace otclasml::opcf;
 	using namespace otclasml;
 
 	t.startGroup("testConstStringMapOpcf");
+
+	t.start("opcf_strings");
+	bool issorted = std::is_sorted(opcf_detail::opcf_strings, opcf_detail::opcf_strings + NENTRIES, ConstStringMap::Less());
+	t.eq(true, issorted, "is_sorted");
+	if (!issorted) {
+		std::cout << "      IS NOT SORTED (" << NENTRIES << ")" << std::endl;
+		std::vector<ConstStringMap::String> vec;
+		vec.reserve(NENTRIES);
+		for (uintn_t i = 0; i < NENTRIES; ++i) {
+			vec.push_back( opcf_detail::opcf_strings[i] );
+		}
+		std::sort(vec.begin(), vec.end(), ConstStringMap::Less());
+		for (uintn_t i = 0; i < NENTRIES; ++i) {
+			const char *a = opcf_detail::opcf_strings[i].data;
+			const char *b = vec[i].data;
+			std::cout << "        " << (a == b) << " " << a << " " << b << std::endl;
+		}
+	}
+	t.stop();
+
 	t.start("toOpcf");
 	t.eq(ALIGNE, toOpcf(".aligne"), ".aligne");
 	t.eq(ALIGNV, toOpcf(".alignv"), ".alignv");

@@ -6,12 +6,35 @@
 
 #include <otclasml/cmaps/mnem.hxx>
 #include <testfx.hxx>
+#include <otclasml/ConstStringMapCmp.hxx>
+#include <algorithm>
+#include <vector>
 
 void testConstStringMapMnem(Tests &t) {
 	using namespace otclasml::mnem;
 	using namespace otclasml;
 
 	t.startGroup("testConstStringMapMnem");
+
+	t.start("mnem_strings");
+	bool issorted = std::is_sorted(mnem_detail::mnem_strings, mnem_detail::mnem_strings + NENTRIES, ConstStringMap::Less());
+	t.eq(true, issorted, "is_sorted");
+	if (!issorted) {
+		std::cout << "      IS NOT SORTED (" << NENTRIES << ")" << std::endl;
+		std::vector<ConstStringMap::String> vec;
+		vec.reserve(NENTRIES);
+		for (uintn_t i = 0; i < NENTRIES; ++i) {
+			vec.push_back( mnem_detail::mnem_strings[i] );
+		}
+		std::sort(vec.begin(), vec.end(), ConstStringMap::Less());
+		for (uintn_t i = 0; i < NENTRIES; ++i) {
+			const char *a = mnem_detail::mnem_strings[i].data;
+			const char *b = vec[i].data;
+			std::cout << "        " << (a == b) << " " << a << " " << b << std::endl;
+		}
+	}
+	t.stop();
+
 	t.start("toMnem");
 	t.eq(ABS, toMnem("abs"), "abs");
 	t.eq(ABS_B, toMnem("abs.b"), "abs.b");

@@ -80,6 +80,7 @@ print $fHeader <<EOF;
 
 #include <$aInclude/StringView.hxx>
 #include <$aInclude/inttypes.hxx>
+#include <$aInclude/ConstStringMap.hxx>
 
 namespace $aNamespace { namespace $aId {
 
@@ -97,8 +98,16 @@ print $fHeader <<EOF;
 	NENTRIES
 }; /* enum */
 
-extern ${aLId}s_e to$aUcId(StringView s);
-extern StringView ${aLId}ToString(uintn_t val);
+namespace ${aId}_detail {
+	extern const ConstStringMap::String ${aLId}_strings[NENTRIES + 1];
+}
+
+inline ${aLId}s_e to$aUcId(StringView s) {
+	return (${aLId}s_e) ConstStringMap::fromString(s, ${aId}_detail::${aLId}_strings, (uintn_t) NENTRIES);
+}
+inline StringView ${aLId}ToString(uintn_t val) {
+	return ConstStringMap::toString(val, ${aId}_detail::${aLId}_strings, (uintn_t) NENTRIES);
+}
 inline StringView toString(${aLId}s_e val) { return ${aLId}ToString(($inttype) val); }
 
 } } /* namespaces */
@@ -129,9 +138,9 @@ print $fCxxFile <<EOF;
 #include <$aInclude/inttypes.hxx>
 #include <$aInclude/ConstStringMap.hxx>
 
-namespace $aNamespace { namespace $aId {
+namespace $aNamespace { namespace $aId { namespace ${aId}_detail {
 
-static const ConstStringMap::String ${aLId}_strings[NENTRIES + 1] = {
+const ConstStringMap::String ${aLId}_strings[NENTRIES + 1] = {
 EOF
 ;
 
@@ -149,14 +158,7 @@ print $fCxxFile <<EOF;
 	{ \"$endString\", $lenEnd }
 }; /* strings */
 
-${aLId}s_e to$aUcId(StringView s) {
-	return (${aLId}s_e) ConstStringMap::fromString(s, ${aLId}_strings, (uintn_t) NENTRIES);
-}
-StringView ${aLId}ToString(uintn_t val) {
-	return ConstStringMap::toString(val, ${aLId}_strings, (uintn_t) NENTRIES);
-}
-
-} } /* namespaces */
+} } } /* namespaces */
 
 EOF
 ;
@@ -181,12 +183,35 @@ print $fTestFile <<EOF;
 
 #include <$aHeaderInclude>
 #include <testfx.hxx>
+#include <$aInclude/ConstStringMapCmp.hxx>
+#include <algorithm>
+#include <vector>
 
 void testConstStringMap${aUcId}(Tests &t) {
 	using namespace $aNamespace::$aId;
 	using namespace $aNamespace;
 
 	t.startGroup("testConstStringMap${aUcId}");
+
+	t.start("${aLId}_strings");
+	bool issorted = std::is_sorted(${aId}_detail::${aLId}_strings, ${aId}_detail::${aLId}_strings + NENTRIES, ConstStringMap::Less());
+	t.eq(true, issorted, "is_sorted");
+	if (!issorted) {
+		std::cout << "      IS NOT SORTED (" << NENTRIES << ")" << std::endl;
+		std::vector<ConstStringMap::String> vec;
+		vec.reserve(NENTRIES);
+		for (uintn_t i = 0; i < NENTRIES; ++i) {
+			vec.push_back( ${aId}_detail::${aLId}_strings[i] );
+		}
+		std::sort(vec.begin(), vec.end(), ConstStringMap::Less());
+		for (uintn_t i = 0; i < NENTRIES; ++i) {
+			const char *a = ${aId}_detail::${aLId}_strings[i].data;
+			const char *b = vec[i].data;
+			std::cout << "        " << (a == b) << " " << a << " " << b << std::endl;
+		}
+	}
+	t.stop();
+
 	t.start("to$aUcId");
 EOF
 ;

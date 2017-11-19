@@ -7,9 +7,9 @@
 #include <otclasml/inttypes.hxx>
 #include <otclasml/ConstStringMap.hxx>
 
-namespace otclasml { namespace mnem {
+namespace otclasml { namespace mnem { namespace mnem_detail {
 
-static const ConstStringMap::String mnem_strings[NENTRIES + 1] = {
+const ConstStringMap::String mnem_strings[NENTRIES + 1] = {
 	{ "abs", 3 }, // 0: ABS
 	{ "abs.b", 5 }, // 1: ABS_B
 	{ "abs.h", 5 }, // 2: ABS_H
@@ -356,12 +356,5 @@ static const ConstStringMap::String mnem_strings[NENTRIES + 1] = {
 	{ "~[invalid~entry~mnem]~", 22 }
 }; /* strings */
 
-mnems_e toMnem(StringView s) {
-	return (mnems_e) ConstStringMap::fromString(s, mnem_strings, (uintn_t) NENTRIES);
-}
-StringView mnemToString(uintn_t val) {
-	return ConstStringMap::toString(val, mnem_strings, (uintn_t) NENTRIES);
-}
-
-} } /* namespaces */
+} } } /* namespaces */
 

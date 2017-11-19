@@ -6,6 +6,7 @@
 
 #include <otclasml/StringView.hxx>
 #include <otclasml/inttypes.hxx>
+#include <otclasml/ConstStringMap.hxx>
 
 namespace otclasml { namespace opcf {
 
@@ -64,8 +65,16 @@ enum opcfs_e : uint8_t {
 	NENTRIES
 }; /* enum */
 
-extern opcfs_e toOpcf(StringView s);
-extern StringView opcfToString(uintn_t val);
+namespace opcf_detail {
+	extern const ConstStringMap::String opcf_strings[NENTRIES + 1];
+}
+
+inline opcfs_e toOpcf(StringView s) {
+	return (opcfs_e) ConstStringMap::fromString(s, opcf_detail::opcf_strings, (uintn_t) NENTRIES);
+}
+inline StringView opcfToString(uintn_t val) {
+	return ConstStringMap::toString(val, opcf_detail::opcf_strings, (uintn_t) NENTRIES);
+}
 inline StringView toString(opcfs_e val) { return opcfToString((uint8_t) val); }
 
 } } /* namespaces */

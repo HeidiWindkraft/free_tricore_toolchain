@@ -7,6 +7,15 @@
 #include <iostream>
 #include <typeinfo>
 
+#include <otclasml/StringView.hxx>
+
+namespace tests {
+	template <class A, class B>
+	bool eq(A const &a, B const &b) {
+		return a == b;
+	}
+}
+
 struct Tests {
 
 	std::ostream &o;
@@ -32,7 +41,7 @@ struct Tests {
 		++nGrpTests;
 		++nTotalTests;
 		o << T() << tn << ": ";
-		if (a == b) {
+		if (tests::eq(a,b)) {
 			o << "ok." << std::endl;
 			return;
 		}

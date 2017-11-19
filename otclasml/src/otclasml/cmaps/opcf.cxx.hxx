@@ -7,9 +7,9 @@
 #include <otclasml/inttypes.hxx>
 #include <otclasml/ConstStringMap.hxx>
 
-namespace otclasml { namespace opcf {
+namespace otclasml { namespace opcf { namespace opcf_detail {
 
-static const ConstStringMap::String opcf_strings[NENTRIES + 1] = {
+const ConstStringMap::String opcf_strings[NENTRIES + 1] = {
 	{ ".aligne", 7 }, // 0: ALIGNE
 	{ ".alignv", 7 }, // 1: ALIGNV
 	{ ".bytes", 6 }, // 2: BYTES
@@ -63,12 +63,5 @@ static const ConstStringMap::String opcf_strings[NENTRIES + 1] = {
 	{ "~[invalid~entry~opcf]~", 22 }
 }; /* strings */
 
-opcfs_e toOpcf(StringView s) {
-	return (opcfs_e) ConstStringMap::fromString(s, opcf_strings, (uintn_t) NENTRIES);
-}
-StringView opcfToString(uintn_t val) {
-	return ConstStringMap::toString(val, opcf_strings, (uintn_t) NENTRIES);
-}
-
-} } /* namespaces */
+} } } /* namespaces */
 

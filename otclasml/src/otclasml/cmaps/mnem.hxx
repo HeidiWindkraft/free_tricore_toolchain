@@ -6,6 +6,7 @@
 
 #include <otclasml/StringView.hxx>
 #include <otclasml/inttypes.hxx>
+#include <otclasml/ConstStringMap.hxx>
 
 namespace otclasml { namespace mnem {
 
@@ -357,8 +358,16 @@ enum mnems_e : uint16_t {
 	NENTRIES
 }; /* enum */
 
-extern mnems_e toMnem(StringView s);
-extern StringView mnemToString(uintn_t val);
+namespace mnem_detail {
+	extern const ConstStringMap::String mnem_strings[NENTRIES + 1];
+}
+
+inline mnems_e toMnem(StringView s) {
+	return (mnems_e) ConstStringMap::fromString(s, mnem_detail::mnem_strings, (uintn_t) NENTRIES);
+}
+inline StringView mnemToString(uintn_t val) {
+	return ConstStringMap::toString(val, mnem_detail::mnem_strings, (uintn_t) NENTRIES);
+}
 inline StringView toString(mnems_e val) { return mnemToString((uint16_t) val); }
 
 } } /* namespaces */
