@@ -1,0 +1,6 @@
+
+Remove elfs
+Ignore elfs
+Rename to "free tricore toolchain" instead of "open tricore toolchain"
+move everything to outdated.
+Write down new plan: There already are binutils and a llvm-backend for TriCore.
