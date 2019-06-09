@@ -1,9 +1,16 @@
+/* ftcexpr.yacc.m4
+ * LICENSE: GPL v3
+*/
+changecom()dnl /* No comments */
+changequote(`[[[',`]]]')dnl /* No easy to hit quotes */
+
 %skeleton "lalr1.cc" /* -*- C++ -*- */
 %require "3.4"
 %defines
 
+%define api.namespace {ftcexpr}
 %define api.token.constructor
-%define api.value.type {int64_t}
+%define api.value.type variant
 %define parse.assert
 
 // This code needs to know the driver object.
@@ -37,14 +44,21 @@
 %token NEVER_TOKEN_DEREFER
 %token NEVER_TOKEN_TYPE
 %token LEFT_OP RIGHT_OP LE_OP GE_OP EQ_OP NE_OP AND_OP OR_OP
+%token NEVER_TOKEN_SIZEOF
+
+%type <uint64_t> ftcexpr_primary_leaf_expression
+%type <uint64_t> ftcexpr_LEFT_OP ftcexpr_RIGHT_OP ftcexpr_LE_OP ftcexpr_GE_OP ftcexpr_EQ_OP ftcexpr_NE_OP
+%type <uint64_t> ftcexpr_AND_OP ftcexpr_OR_OP
+%type <uint64_t> ftcexpr_argument_expression_list ftcexpr_member_access ftcexpr_INC_OP ftcexpr_DEC_OP
+%type <uint64_t> ftcexpr_cast_expression ftcexpr_ADDRESSOF ftcexpr_DEREFER ftcexpr_type ftcexpr_SIZEOF
 
 %printer { yyo << $$; } <*>;
 
-%%
-
 %start input
 
-include(`intarith_rules.yacc')
+include(ftcexpr_rule_types.yacc)
+
+%%
 
 input: | ftcexpr_expression { printf("%" PRId64 "\n", $1); };
 
@@ -52,6 +66,7 @@ ftcexpr_primary_leaf_expression
 	: INTLITERAL { $$ = ftcexpr_parse_intlit(yytext); }
 	| IDENTIFIER { $$ = demo_getfunc(yytext); }
 	;
+
 
 ftcexpr_LEFT_OP : LEFT_OP  { $$ = 0; };
 ftcexpr_RIGHT_OP: RIGHT_OP { $$ = 0; };
@@ -71,6 +86,9 @@ ftcexpr_ADDRESSOF: NEVER_TOKEN_ADDRESSOF { $$ = 0; };
 ftcexpr_DEREFER: NEVER_TOKEN_DEREFER { $$ = 0; };
 ftcexpr_type: NEVER_TOKEN_TYPE { $$ = 0; };
 
+ftcexpr_SIZEOF: NEVER_TOKEN_SIZEOF { $$ = 0; }
+
+include(ftcexpr_rules.yacc)
 
 %%
 

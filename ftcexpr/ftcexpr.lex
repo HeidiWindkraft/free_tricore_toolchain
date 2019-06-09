@@ -5,6 +5,8 @@
 %}
 
 %option noyywrap nounput noinput batch debug
+%option reentrant
+%option prefix="ftcexpr_"
 
 id      [a-zA-Z_][a-zA-Z0-9_\.]+
 intlit	([0-9][0-9'_]*|0[xX][0-9a-fA-F_']+|0o[0-7_']+)[ulUL]*
@@ -40,6 +42,8 @@ blank   [ \t\r]
 %%
 
 // TODO actually we only want to parse single lines.
+// TODO yy_scan_bytes (alocates) or yy_scan_buffer (needs \0\0 terminator and mutable memory)
+// TODO yylex_destroy --yypush_buffer_state yypop_buffer_state yy_delete_buffer
 void Driver::scan_begin(void)
 {
   yy_flex_debug = trace_scanning;

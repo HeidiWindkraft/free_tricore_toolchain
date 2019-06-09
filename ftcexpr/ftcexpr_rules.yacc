@@ -1,6 +1,14 @@
-
+/* ftcexpt_rules.yacc
+ * LICENSE: GPL version 3, see LICENSE
+ *
+ * This file contains rules for integer expressions.
+ * It is meant to be processed by M4.
+*/
+changecom()dnl; /* Disable comments. */
+changequote(`[[[',`]]]')dnl /* No easy to hit quotes */
+ifelse([[[
 %%
-
+]]])dnl : ; /* Terminate this like a grammar rule, to avoid confusing the highlighting. */
 /* [DRIVER] FTCEXPR_DRV() is meant to retrieve the driver interface and shall work in several languages.
  *          C: Could be a define to a global variable containing function pointers.
  *             Could be `*drv` where `drv` is an additional pointer argument to the parse function
