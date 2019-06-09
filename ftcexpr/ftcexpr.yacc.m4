@@ -9,6 +9,7 @@ changequote(`[[[',`]]]')dnl /* No easy to hit quotes */
 %defines
 
 %define api.namespace {ftcexpr}
+%define api.prefix {ftcexpr_}
 %define api.token.constructor
 %define api.value.type variant
 %define parse.assert
@@ -19,8 +20,9 @@ changequote(`[[[',`]]]')dnl /* No easy to hit quotes */
 #include "ftcexpr_demo_driver_fwd.hxx"
 }
 
-// The parsing context.
+// The lexing and parsing context.
 %param { ftcexpr_demo::Driver& drv }
+%param {void *yyscanner}
 
 // Track locations.
 %locations
@@ -30,6 +32,9 @@ changequote(`[[[',`]]]')dnl /* No easy to hit quotes */
 
 %code {
 #include "ftcexpr_demo_driver.hxx"
+#include "ftcexpr_parse_intlit.hxx"
+
+#define FTCEXPR_DRV() drv
 }
 
 %define api.token.prefix {TOK_}
@@ -37,6 +42,7 @@ changequote(`[[[',`]]]')dnl /* No easy to hit quotes */
 // Tokens
 %token <std::string> INTLITERAL
 %token <std::string> IDENTIFIER
+%token END 0 "end of file"
 %token NEVER_TOKEN_MACC
 %token NEVER_TOKEN_INC_OP
 %token NEVER_TOKEN_DEC_OP
@@ -60,11 +66,11 @@ include(ftcexpr_rule_types.yacc)
 
 %%
 
-input: | ftcexpr_expression { printf("%" PRId64 "\n", $1); };
+input: ftcexpr_expression END { drv.last_result = $1; };
 
 ftcexpr_primary_leaf_expression
-	: INTLITERAL { $$ = ftcexpr_parse_intlit(yytext); }
-	| IDENTIFIER { $$ = demo_getfunc(yytext); }
+	: INTLITERAL { $$ = ftcexpr::parse_intlit($1).value; }
+	| IDENTIFIER { $$ = FTCEXPR_DRV().demo_getfunc($1); }
 	;
 
 
@@ -92,19 +98,7 @@ include(ftcexpr_rules.yacc)
 
 %%
 
-/*int main(int argc, char **argv) {
-	if (argc < 2) {
-		return 1;
-	} else {
-		yyscan_t scanner;
-		YY_BUFFER_STATE buf;
-
-		yylex_init(&scanner);
-		buf = yy_scan_string(argv[1], scanner);
-		yylex(scanner);
-		yylex_destroy(scanner)
-
-		return 0;
-	}
-}*/
+void ftcexpr::parser::error(ftcexpr::location const &loc, std::string const &msg) {
+	throw ftcexpr::parser::syntax_error(loc, msg);
+}
 

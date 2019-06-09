@@ -1,5 +1,5 @@
 
-.PHONY: all clean_gen
+.PHONY: all clean_gen clean
 
 all: ftcexpr
 
@@ -10,8 +10,12 @@ LEX_CXX=ftcexpr_lex.gen.cxx
 LEX_HXX=ftcexpr_lex.gen.hxx
 PREPROC_YACC=ftcexpr.gen.yacc
 
-ftcexpr: $(YACC_CXX) $(LEX_CXX) $(YACC_DEFINES) $(YACC_LOCATION) $(LEX_HXX)
-	gcc $(YACC_CXX) $(LEX_CXX) -o $@
+CCXX_OPT= -std=c++14 -Wall -Wextra -O3 -g
+
+FILES_TO_COMPILE = $(YACC_CXX) $(LEX_CXX) ftcexpr_parse_intlit.cxx ftcexpr_demo_driver.cxx main.cxx
+
+ftcexpr: $(FILES_TO_COMPILE) $(YACC_DEFINES) $(YACC_LOCATION) $(LEX_HXX) ftcexpr_parse_intlit.hxx
+	g++ $(CCXX_OPT) $(FILES_TO_COMPILE) -o $@
 
 $(YACC_CXX): $(PREPROC_YACC)
 	bison --output=$@ --defines=$(YACC_DEFINES) $^
@@ -30,3 +34,7 @@ clean_gen:
 	rm -f $(YACC_LOCATION)
 	rm -f $(LEX_CXX)
 	rm -f $(LEX_HXX)
+
+clean: clean_gen
+	rm -f ftcexpr
+
