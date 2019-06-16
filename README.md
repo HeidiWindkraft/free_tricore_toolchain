@@ -17,7 +17,7 @@ The purpose of this tool-chain is
 - to do intensive, continuous testing
   - for which the expensive licenses of certified compilers are not suitable
   - and for which the windows binaries and their license checks are too slow
-- to allow using languages which use LLVM as a backend on TriCore (see also [sic](https://github.com/HeidiWindkraft/sic)).
+- to allow using languages which use LLVM as backend on TriCore ([sic](https://github.com/HeidiWindkraft/sic)?).
 
 ## Strategy and structure
 
