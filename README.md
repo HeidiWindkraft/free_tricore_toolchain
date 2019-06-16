@@ -78,11 +78,3 @@ I'm not sure whether any of the things I saw there are legal and I'm not really 
 I'm not a lawyer.
 Let's better avoid this code.
 Nevertheless, it could be useful for early testing or for testing interoperability and conformance.
-
-Note:
-Apparently "HighTec EDV-Systeme GmbH" did a commercial port of GNU binutils and the GNU Compiler Collection.
-This seems to be fine and apparently they only need to provide the source code to those who purchased their software.
-Someone could also do this to "ftct" (if it ever becomes usable).
-I don't really know how to forbid this.
-(Note: I don't want to belittle that "HighTec EDV-Systeme GmbH" actually ported the GNU toolchain to a new hardware architecture - so they actually added value.)
-
