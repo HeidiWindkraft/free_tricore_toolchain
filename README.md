@@ -36,6 +36,14 @@ Furthermore, this software is intended to be free.
 ## Getting started
 TODO
 
+### ftcexpr
+
+Go to directory `ftcexpr` and execute `make`.
+Then execute `./ftcexpr "40 + 2" "@s16lo(0xefff_efff)" "@s16hi(0xefff_efff)"` and have a look at the result.
+It should eveluate the integer expressions as you'd expect them to be evaluated in assembler code.
+If `make` demands for flex and bison either install them or touch the `*.gen.*` files.
+
+
 ## Research and similar projects
 
 Here are basically the first hits of a web search...
