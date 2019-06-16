@@ -19,7 +19,7 @@ The purpose of this tool-chain is
   - and for which the windows binaries and their license checks are too slow
 - to allow using languages which use LLVM as backend on TriCore ([sic](https://github.com/HeidiWindkraft/sic)?).
 
-## Strategy and structure
+## Structure
 
 Here's the plan:
 This repository contains the library "ftct" for handling the TriCore processor architecture.
