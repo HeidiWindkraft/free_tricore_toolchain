@@ -40,7 +40,7 @@ TODO
 
 Go to directory `ftcexpr` and execute `make`.
 Then execute `./ftcexpr "40 + 2" "@s16lo(0xefff_efff)" "@s16hi(0xefff_efff)"` and have a look at the result.
-It should eveluate the integer expressions as you'd expect them to be evaluated in assembler code.
+It should evaluate the integer expressions as you'd expect them to be evaluated in assembler code.
 If `make` demands for flex and bison either install them or touch the `*.gen.*` files.
 
 
@@ -80,7 +80,7 @@ It can be found here:
 ### 2018/2005 GNU binutils for TriCore
 
 There's https://github.com/Cheb57/binutils-tricore .
-Apparently it contains code which was once provided by "HighTec EDV-Systeme GmbH", but which seem to be no longer publicly available.
+Apparently it contains code which was once provided by "HighTec EDV-Systeme GmbH", but which seems to be no longer publicly available.
 I first thought those are only binaries, but there is zipped source code in it.
 
 I'm not sure whether any of the things I saw there are legal and I'm not really sure how to handle this.
