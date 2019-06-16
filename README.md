@@ -14,9 +14,10 @@ but nevertheless certified commercial compilers are often used to produce safety
 
 The purpose of this tool-chain is
 - to have an extendable compiler for this chip which also allows to write free example tools to analyse software
-- to do intensive (tool-chain-independent) testing
+- to do intensive, continuous testing
   - for which the expensive licenses of certified compilers are not suitable
   - and for which the windows binaries and their license checks are too slow
+- to allow using languages which use LLVM as a backend on TriCore (see also [sic](https://github.com/HeidiWindkraft/sic)).
 
 ## Strategy and structure
 
