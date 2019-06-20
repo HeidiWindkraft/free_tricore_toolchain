@@ -51,10 +51,18 @@ Here are basically the first hits of a web search...
 Code of these sources shall only be re-used, if it is free and GPL compatible.
 If code is copied from these sources, it shall be clearly marked.
 
-### TriCore 1 User's Manual V1.3.8 Volume 2
+### Infineon documents
+
+#### TriCore 1 User's Manual V1.3.8 Volume 2
 
 This document contains information about the instruction set of TriCore machines.
 It can be found here: https://www.infineon.com/dgdl/tc_v131_instructionset_v138.pdf?fileId=db3a304412b407950112b409b6dd0352
+
+#### TriCore EABI v2.3
+
+This document contains information about TriCore's Embedded Application Binary Interface.
+It can be found here: https://www.infineon.com/dgdl/TriCore_EABI_v2_3.pdf?fileId=db3a304412b407950112b40f8d7a142b
+
 
 ### TriCore QEMU
 
