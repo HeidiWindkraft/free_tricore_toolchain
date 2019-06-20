@@ -7,7 +7,7 @@ ftct is also meant to be free in the sense that it isn't commercial software.
 
 ftct is not meant to be a competitor to commercial compilers.
 Note, that TriCore processors are meant to be used in safety-critical automotive control units.
-Because there's not intention to certify this tool-chain for use in safety-critical systems,
+Because there's no intention to certify this tool-chain for use in safety-critical systems,
 this tool-chain cannot be used to produce safety-critical automotive control units.
 For example, there's GCC for ARM or Power Architecture,
 but nevertheless certified commercial compilers are often used to produce safety-critical systems.
