@@ -24,7 +24,7 @@ The purpose of this tool-chain is
 Here's the plan:
 This repository contains the library "ftct" for handling the TriCore processor architecture.
 Library "ftct" is under GPL.
-GNU binutils are usedd fdor assembling linking and handling ELF files.
+GNU binutils are used for assembling, linking and handling ELF files.
 The LLVM infrastructure is used to generate assembler code from C or other languages.
 Library "ftct" is used by the GNU binutils port for TriCore which is added as sub-module of this repository.
 Library "ftct" is used by the LLVM port for TriCore which is added as sub-module of this repository.
