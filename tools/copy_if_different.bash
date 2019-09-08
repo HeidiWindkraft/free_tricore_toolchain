@@ -4,7 +4,7 @@ fileA=$1
 fileB=$2
 
 if [ $# != 2 ]; then
-  echo "ERROR: Invalid arguments count: $#" 1>&2
+  echo "ERROR: $0: Invalid arguments count: $#" 1>&2
   cat <<EOH 1>&2
 USAGE
   $0 fileA fileB
@@ -17,8 +17,8 @@ EOH
 fi
 
 if [ -e "${fileB}" ]; then
-  cmp --silent "${fileA}" "${fileB}" || (echo "INFO: Overwriting file \"${fileB}\"" 1>&2; cp "${fileA}" "${fileB}")
+  cmp --silent "${fileA}" "${fileB}" || (echo "INFO: $0: Overwriting file \"${fileB}\"" 1>&2; cat "${fileA}" > "${fileB}")
 else
-  echo "INFO: Overwriting inexistent file \"${fileB}\"" 1>&2;
+  echo "INFO: $0: Overwriting inexistent file \"${fileB}\"" 1>&2;
   cp "${fileA}" "${fileB}"
 fi

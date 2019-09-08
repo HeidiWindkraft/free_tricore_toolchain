@@ -9,7 +9,7 @@ gittag=$4
 submod=$5
 
 if [ $# != 5 ]; then
-  echo "ERROR: Invalid arguments count: $#" 1>&2
+  echo "ERROR: $0: Invalid arguments count: $#" 1>&2
   cat <<EOH 1>&2
 USAGE
   $0 makenode codir giturl gittag submod
@@ -42,7 +42,7 @@ fi
 
 
 if [ -e "${codir}" ]; then
-  echo "INFO: Skipping checkout of ${giturl} / ${gittag}, because \"${codir}\" already exists." 1>&2
+  echo "INFO: $0: Skipping checkout of ${giturl} / ${gittag}, because \"${codir}\" already exists." 1>&2
 else
   mkdir -p "${codir}"
   git clone "${giturl}" "${codir}"
@@ -56,5 +56,5 @@ else
   #date --iso-8601=ns >> "${logfile}"
 fi
 
-echo "INFO: Checking whether make-node \"${makenode}\" needs an update" 1>&2
-"${scriptdir}/copy_if_different.bash" <("${scriptdir}/get_checkout_description.bash") "${makenode}"
+echo "INFO: $0: Checking whether make-node \"${makenode}\" needs an update" 1>&2
+"${scriptdir}/copy_if_different.bash" <("${scriptdir}/get_checkout_description.bash" "${codir}") "${makenode}"

@@ -3,7 +3,7 @@
 codir=$1
 
 if [ $# != 1 ]; then
-  echo "ERROR: Invalid arguments count: $#" 1>&2
+  echo "ERROR: $0: Invalid arguments count: $#" 1>&2
   cat <<EOH 1>&2
 USAGE
   $0 codir
@@ -25,3 +25,10 @@ echo "# HASH OF UNSTAGED COMMITS"
 git diff | sha1sum
 echo "# STATUS"
 git status --short
+echo "# SUBMODULE STATUS"
+git submodule status
+echo "# HASH OF STAGED SUBMODULE COMMITS"
+git submodule foreach --recursive git diff --staged | sha1sum
+echo "# HASH OF UNSTAGED SUBMODULE COMMITS"
+git submodule foreach --recursive git diff | sha1sum
+echo "# END"
