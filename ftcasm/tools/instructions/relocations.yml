@@ -1,0 +1,107 @@
+---
+relocations:
+  R_TRICORE_NONE:
+    value: 0
+    field: none
+    calc: none
+  R_TRICORE_32REL:
+    value: 1
+    field: word32
+    calc: 'S + A - P'
+  R_TRICORE_32ABS:
+    value: 2
+    field: word32
+    calc: 'S + A'
+  R_TRICORE_24REL:
+    value: 3
+    field: relB
+    calc: 'S + A - P'
+  R_TRICORE_24ABS:
+    value: 4
+    field: absB
+    calc: 'S + A'
+  R_TRICORE_16SM:
+    value: 5
+    field: BOL
+    calc: S + A - A[0]
+  R_TRICORE_HI:
+    value: 6
+    field: RLC
+    calc: S + A + 0x8000 >> 16
+  R_TRICORE_LO:
+    value: 7
+    field: RLC
+    calc: S + A & 0xFFFF
+    altname: R_TRICORE_LO_RLC
+  R_TRICORE_LO2:
+    value: 8
+    field: BOL
+    calc: S + A & 0xFFFF
+    altname: R_TRICORE_LO_BOL
+  R_TRICORE_18ABS:
+    value: 9
+    field: ABS
+    calc: S + A
+  R_TRICORE_10SM:
+    value: 10
+    field: BO
+    calc: S + A - A[0]
+    comment: Small mutable data areas are considered pointless on multi-core NUMA machines which offer memory protection.
+  R_TRICORE_15REL:
+    value: 11
+    field: BR
+    calc: S + A - P
+  R_TRICORE_10LI:
+    value: 12
+    field: BO
+    calc: S + A - A[1]
+  R_TRICORE_16LI:
+    value: 13
+    field: BOL
+    calc: S + A - A[1]
+  R_TRICORE_10A8:
+    value: 14
+    field: BO
+    calc: S + A - A[8]
+    comment: |
+      According to section "2.2.1.4 System Global Registers" of TRICORE EABI v2.3,
+      registers A8 and A9 are the operating system's business.
+      As the handling is similar to A1 etc. it shouldn't be an issue to offer this relocation, though.
+  R_TRICORE_16A8:
+    value: 15
+    field: BOL
+    calc: S + A - A[8]
+    comment: see R_TRICORE_10A8
+  R_TRICORE_10A9:
+    value: 16
+    field: BO
+    calc: S + A - A[9]
+    comment: see R_TRICORE_10A8
+  R_TRICORE_16A9:
+    value: 17
+    field: BOL
+    calc: S + A - A[9]
+  R_TRICORE_PCPHI:
+    value: 25
+    field: word16
+    calc: S + A >> 16
+    comment: The MMU and paging seem to be irrelevant on nowadays TriCores
+  R_TRICORE_PCPLO:
+    value: 26
+    field: word16
+    calc: S + A & 0xFFFF
+    comment: The MMU and paging seem to be irrelevant on nowadays TriCores
+  R_TRICORE_PCPPAGE:
+    value: 27
+    field: pcpPage
+    calc: S + A & 0xFF00
+    comment: The MMU and paging seem to be irrelevant on nowadays TriCores
+  R_TRICORE_PCPOFF:
+    value: 28
+    field: PI
+    calc: (S + A >> 2) & 0x3F
+    comment: The MMU and paging seem to be irrelevant on nowadays TriCores
+  R_TRICORE_PCPTEXT:
+    value: 29
+    field: word16
+    calc: (S + A >> 1) & 0xFFFF

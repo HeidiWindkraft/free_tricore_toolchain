@@ -1,0 +1,80 @@
+---
+registers_arrays:
+  d:
+    register_count: 16
+    dwarf_atom_offset: 0
+    comment: |
+      Registers d0 to d7 are part of the lower context.
+      Registers d8 to d15 are part of the upper context.
+  a:
+    register_count: 16
+    dwarf_atom_offset: 16
+    comment: |
+      Registers a2 to a7 are part of the lower context.
+      Registers a10 to a15 are part of the upper context.
+register_array_augmentation:
+  a0:
+    context: global
+    comment: SDA
+  a1:
+    context: global
+    comment: LDA
+  a8:
+    context: global
+    comment: Reserved for OS use according to section "2.2.1.4 System Global Registers" of EABI v2.3
+  a9:
+    context: global
+    comment: Reserved for OS use according to section "2.2.1.4 System Global Registers" of EABI v2.3
+  a10:
+    comment: stack pointer
+  a11:
+    comment: return address (link register)
+  a12:
+    comment: far call trampoline register
+  a15:
+    comment: implicit address register
+registers:
+  e0:
+    dwarf_atom: 32
+    sub_registers: [ d0, d1 ]
+  e2:
+    dwarf_atom: 33
+    sub_registers: [ d2, d3 ]
+  e4:
+    dwarf_atom: 34
+    sub_registers: [ d4, d5 ]
+  e6:
+    dwarf_atom: 35
+    sub_registers: [ d6, d7 ]
+  e8:
+    dwarf_atom: 36
+    sub_registers: [ d8, d9 ]
+  e10:
+    dwarf_atom: 37
+    sub_registers: [ d10, d11 ]
+  e12:
+    dwarf_atom: 38
+    sub_registers: [ d12, d13 ]
+  e14:
+    dwarf_atom: 39
+    sub_registers: [ d14, d15 ]
+  psw:
+    dwarf_atom: 40
+  pcxi:
+    dwarf_atom: 41
+  pc:
+    dwarf_atom: 42
+  fcx:
+    dwarf_atom: 43
+  lcx:
+    dwarf_atom: 44
+  isp:
+    dwarf_atom: 45
+  icr:
+    dwarf_atom: 46
+  pipn:
+    dwarf_atom: 47
+  biv:
+    dwarf_atom: 48
+  btv:
+    dwarf_atom: 49
