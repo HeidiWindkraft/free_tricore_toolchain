@@ -22,10 +22,11 @@ ftct_qemu_first_default_checkout_dir  := $(ftct_config_dir)/../qemu
 ftct_qemu_second_default_checkout_dir := $(ftct_qemu_build_dir)/checkout
 ifeq ($(FTCT_QEMU_CHECKOUT_DIR),)
 	ifneq ($(wildcard $(ftct_qemu_first_default_checkout_dir)),)
-		FTCT_QEMU_CHECKOUT_DIR ?= $(ftct_qemu_first_default_checkout_dir)
+		FTCT_QEMU_CHECKOUT_DIR := $(abspath $(ftct_qemu_first_default_checkout_dir))
+	else
+		FTCT_QEMU_CHECKOUT_DIR := $(ftct_qemu_second_default_checkout_dir)
 	endif
 endif
-FTCT_QEMU_CHECKOUT_DIR ?= $(ftct_qemu_second_default_checkout_dir)
 
 ftct_qemu_build_dir    = $(FTCT_QEMU_BUILD_DIR)
 ftct_qemu_checkout_dir = $(FTCT_QEMU_CHECKOUT_DIR)

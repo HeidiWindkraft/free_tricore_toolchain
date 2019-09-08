@@ -12,7 +12,7 @@ all:
 # ## ## ## ##
 
 ifeq ($(ftct_testsuite_build_dir),)
-$(error "ERROR: ftct_testsuite_build_dir) is not set.")
+$(error "ERROR: ftct_testsuite_build_dir is not set.")
 endif
 
 # ## ## ## ##
@@ -20,10 +20,10 @@ endif
 # ## ## ## ##
 
 ifeq ($(ftct_qemu_build_dir),)
-$(error "ERROR: ftct_qemu_build_dir) is not set.")
+$(error "ERROR: ftct_qemu_build_dir is not set.")
 endif
 ifeq ($(ftct_qemu_checkout_dir),)
-$(error "ERROR: ftct_qemu_checkout_dir) is not set.")
+$(error "ERROR: ftct_qemu_checkout_dir is not set.")
 endif
 
 testsuite: qemu
