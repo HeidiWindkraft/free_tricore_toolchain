@@ -31,4 +31,4 @@ ftct_qemu_build_dir    = $(FTCT_QEMU_BUILD_DIR)
 ftct_qemu_checkout_dir = $(FTCT_QEMU_CHECKOUT_DIR)
 ftct_qemu_git_url      := https://github.com/qemu/qemu.git
 ftct_qemu_git_tag      := v4.1.0
-ftct_qemu_bin          = $(ftct_build_dir)/bin/qemu-system-tricore
+ftct_qemu_bin          = $(ftct_qemu_build_dir)/bin/qemu-system-tricore
